@@ -1,0 +1,330 @@
+<app-group-button [GROUP_BUTTON]="GROUP_BUTTON" (openModalEvent)="openModal($event, Entity)" (searchEvent)="search()"
+    (filterEvent)="displayFilter()" (exportExcelEvent)="export()"></app-group-button>
+    
+<nz-modal *ngIf="isInsert" [(nzVisible)]="isInsert" nzTitle="Thêm mới" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="onSubmit()">
+    <ng-container *nzModalContent>
+        <div [nzGutter]="24">
+            <div class="row">
+                <div nz-col [nzSpan]="12">
+                    <app-input-custom [LABEL]="'Mã'" [MINLENGTH]="3" [MAXLENGTH]="10"
+                        (changeInput)="field_Validation.code = $event;" [PLACEHOLDER]="'Nhập mã'" [REQUIRED]="true"
+                        [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'code'" [(VALUE)]="Entity.code" [DISABLED]="true">
+                    </app-input-custom>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <app-input-custom [CLASSNAME]="(!field_Validation.name && onSubmitting) ? 'invalid-form' : ''"
+                        [LABEL]="'Tên'" (changeInput)="field_Validation.name = $event; validateCustom()"
+                        [PLACEHOLDER]="'Nhập tên'" [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'name'"
+                        [(VALUE)]="Entity.name">
+                    </app-input-custom>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <app-select-custom
+                        [CLASSNAME]="(!field_Validation.categoryId && onSubmitting) ? 'invalid-form' : ''"
+                        [LABEL_SELECT]="'name'" (changeSelect)="field_Validation.categoryId = $event"
+                        [VALUE_SELECT]="'id'" [LISTOPTION]="categories" [LABEL]="'Danh mục'"
+                        (changeSelect)="field_Validation.categoryId = $event; validateCustom()"
+                        [PLACEHOLDER]="'Chọn danh mục'" [REQUIRED]="true" [ENTITY]="Entity" [FIELD]="'categoryId'"
+                        [TYPE]="'NORMAL'" [VALUE]="Entity.categoryId"></app-select-custom>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <app-select-custom [CLASSNAME]="(!field_Validation.brandId && onSubmitting) ? 'invalid-form' : ''"
+                        [LABEL_SELECT]="'name'" (changeSelect)="field_Validation.brandId = $event" [VALUE_SELECT]="'id'"
+                        [LISTOPTION]="brands" [LABEL]="'Thương hiệu'"
+                        (changeSelect)="field_Validation.brandId = $event; validateCustom()"
+                        [PLACEHOLDER]="'Chọn thương hiệu'" [REQUIRED]="true" [ENTITY]="Entity" [FIELD]="'brandId'"
+                        [TYPE]="'NORMAL'" [VALUE]="Entity.brandId"></app-select-custom>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <br>
+                    <div class="clearfix">
+                        <nz-upload [nzBeforeUpload]="beforeUpload" [nzCustomRequest]="handleUpload" nzListType="picture"
+                            [nzLimit]="1" [(nzFileList)]="listFileUpload">
+                            <img *ngIf="Entity.image" src="{{URL_Upload}}/{{Entity.image ?? ''}}" class="img_logo">
+                            <button nz-button>
+                                <span nz-icon nzType="upload"></span>
+                                Tải ảnh lên
+                            </button>
+                        </nz-upload>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
+
+<section class="content cus-body" *ngIf="isFilter">
+    <div class="card">
+        <div class="card-body">
+            <div [nzGutter]="24">
+                <form nz-form nzLayout="vertical" nz-row>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Mã sản phẩm</nz-form-label>
+                            <nz-input-group [nzSuffix]="suffixIconSearch">
+                                <input type="text" nz-input placeholder="Nhập tìm kiếm"
+                                    [(ngModel)]="EntitySearch.code" />
+                            </nz-input-group>
+                            <ng-template #suffixIconSearch>
+                                <span nz-icon nzType="search"></span>
+                            </ng-template>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Tên sản phẩm</nz-form-label>
+                            <nz-input-group [nzSuffix]="suffixIconSearch">
+                                <input type="text" nz-input placeholder="Nhập tìm kiếm"
+                                    [(ngModel)]="EntitySearch.name" />
+                            </nz-input-group>
+                            <ng-template #suffixIconSearch>
+                                <span nz-icon nzType="search"></span>
+                            </ng-template>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Danh mục</nz-form-label>
+                            <nz-select nzShowSearch nzAllowClear nz-input nzPlaceHolder="Chọn danh mục"
+                                [(ngModel)]="EntitySearch.categoryId">
+                                <nz-option *ngFor="let option of categories" [nzLabel]="option.name"
+                                    [nzValue]="option.id"></nz-option>
+                            </nz-select>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Thương hiệu</nz-form-label>
+                            <nz-select nzShowSearch nzAllowClear nz-input nzPlaceHolder="Chọn thương hiệu"
+                                [(ngModel)]="EntitySearch.brandId">
+                                <nz-option *ngFor="let option of brands" [nzLabel]="option.name"
+                                    [nzValue]="option.id"></nz-option>
+                            </nz-select>
+                        </nz-form-item>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content cus-body">
+    <div class="card">
+        <div class="card-body">
+            <nz-table #basicTable [nzData]="Entities" [nzBordered]="true">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Ảnh</th>
+                        <th>Danh mục</th>
+                        <th>Thương hiệu</th>
+                        <th>Ngày tạo</th>
+                        <th>Ngày sửa</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data; let i =index"
+                        [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                        <td>{{i+1}}</td>
+                        <td>{{data.code}}</td>
+                        <td>{{data.name}}</td>
+                        <td><img src="{{URL_Upload}}/{{data.image ?? ''}}" class="img_logo"></td>
+                        <td>{{data.category.name}}</td>
+                        <td>{{data.brand.name}}</td>
+                        <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td *ngIf="!data.isSoftDeleted">
+                            <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
+                                    nzTheme="outline"></span></a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a><span nz-icon nzType="delete" (click)="isDisplayDelete = true; id_record = data.id"
+                                    nzTheme="outline"></span></a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a><span nz-icon nzType="file"
+                                    (click)="isDisplayDetail = true; id_record = data.id; Entity.description = ''; isInsertDetail = true"
+                                    nzTheme="outline"></span></a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a><span nz-icon nzType="zoom-in" nzTheme="outline"
+                                    (click)="openAttributeModal(data)"></span> </a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a><span nz-icon nzType="eye" nzTheme="outline"
+                                    (click)="isDisplayDetail = true; isInsertDetail = false; getProductDescriptions(data.id)"></span>
+                            </a>
+                        </td>
+                        <td *ngIf=" data.isSoftDeleted">
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</section>
+
+<app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
+    (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<nz-modal *ngIf="isDisplayDetail" [(nzVisible)]="isDisplayDetail" [nzTitle]="'Chi tiết'" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+        <ckeditor *ngIf="isInsertDetail" [(ngModel)]="Entity.description" [editor]="Editor"></ckeditor>
+        <ng-container *ngIf="!isInsertDetail">
+            <nz-table #basicTable [nzData]="productDescriptions" [nzBordered]="true">
+                <thead>
+                    <tr>
+                        <th>Mô tả</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let desc of basicTable.data; let i =index"
+                        [class]="desc.isSoftDeleted ? 'bg_deleted' : ''">
+                        <td>
+                            <div [innerHTML]="desc.description"></div>
+                        </td>
+                        <td style="width: 75px !important;">
+                            <a><span nz-icon nzType="delete" (click)="deleteProductDescription(desc.id)"
+                                    nzTheme="outline"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </ng-container>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="handleCancel()">Đóng</button>
+        <button nz-button nzType="primary" (click)="addProductDescription()">Xác nhận</button>
+    </div>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isDisplayAttribute" nzTitle="Danh sách thông tin sản phẩm" (nzOnCancel)="handleCancel()"
+    [nzWidth]="1500">
+    <ng-container *nzModalContent>
+        <div [nzGutter]="24">
+            <div nz-row>
+                <div nz-col [nzSpan]="16">
+                    <div [nzGutter]="24">
+                        <form nz-form nzLayout="vertical" nz-row>
+                            <div nz-col [nzSpan]="2">
+                                <app-input-custom [PLACEHOLDER]="'Nhập mã'" [TYPE]="'text'"
+                                    [ENTITY]="productAttributeEntity" [FIELD]="'code'"
+                                    [(VALUE)]="productAttributeEntity.code">
+                                </app-input-custom>
+                            </div>
+                            <div nz-col [nzSpan]="2">
+                                <app-input-custom [PLACEHOLDER]="'Nhập giá'" [TYPE]="'number'"
+                                    [ENTITY]="productAttributeEntity" [FIELD]="'price'"
+                                    [(VALUE)]="productAttributeEntity.price">
+                                </app-input-custom>
+                            </div>
+                            <div nz-col [nzSpan]="4">
+                                <app-input-custom [PLACEHOLDER]="'Nhập số lượng'" [TYPE]="'number'"
+                                    [ENTITY]="productAttributeEntity" [FIELD]="'amount'"
+                                    [(VALUE)]="productAttributeEntity.amount">
+                                </app-input-custom>
+                            </div>
+                            <div nz-col [nzSpan]="4">
+                                <input nz-input [(ngModel)]="productAttributeEntity.color" type="color" />
+                            </div>
+                            <div nz-col [nzSpan]="4">
+                                <app-input-custom [TYPE]="'text'" [PLACEHOLDER]="'Nhập đơn vị tính'"
+                                    [ENTITY]="productAttributeEntity" [FIELD]="'unit'"
+                                    [(VALUE)]="productAttributeEntity.unit">
+                                </app-input-custom>
+                            </div>
+                            <div nz-col [nzSpan]="4">
+                                <app-input-custom [TYPE]="'text'" [PLACEHOLDER]="'Nhập giá trị'"
+                                    [ENTITY]="productAttributeEntity" [FIELD]="'value'"
+                                    [(VALUE)]="productAttributeEntity.value">
+                                </app-input-custom>
+                            </div>
+                            &nbsp;&nbsp;
+                            <div nz-col [nzSpan]="3">
+                                <button nz-button [nzType]="'primary'" (click)="saveAttribute()">
+                                    +
+                                </button>&nbsp;
+                                <button nz-button [nzType]="'primary'"
+                                    (click)="productAttributeEntity = {}; isEdit = false">
+                                    Tải lại
+                                </button>
+                            </div>
+                            <div nz-col [nzSpan]="12" *ngIf="!isEdit">
+                                <nz-range-picker [(ngModel)]="dateRange"
+                                    (ngModelChange)="onChangeDateRange($event)"></nz-range-picker>
+                            </div>
+                        </form>
+                        <nz-table #basicTable [nzData]="productAttributes">
+                            <thead>
+                                <tr>
+                                    <th>Mã sản phẩm</th>
+                                    <th>Đơn vị tính</th>
+                                    <th>Giá trị</th>
+                                    <th>Màu sắc</th>
+                                    <th>Giá tiền</th>
+                                    <th>Số lượng</th>
+                                    <th>Ngày sản xuất</th>
+                                    <th>Ngày hết hạn</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of basicTable.data"
+                                    [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                                    <td>{{data.code}}</td>
+                                    <td>{{data.unit}}</td>
+                                    <td>{{data.value}}</td>
+                                    <td><input type="color" value="{{data.color}}" disabled="true"></td>
+                                    <td>{{data.price | number}}</td>
+                                    <td>{{data.amount | number}}</td>
+                                    <td>{{data.manufactureDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{data.expireDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td *ngIf="data.isSoftDeleted">
+                                    </td>
+                                    <td *ngIf="!data.isSoftDeleted">
+                                        <a><span nz-icon nzType="edit" nzTheme="outline"
+                                                (click)="editAttibute(data)"></span></a>
+                                        <nz-divider nzType="vertical"></nz-divider>
+                                        <a><span nz-icon nzType="delete" (click)="deleteAttribute(data.id)"
+                                                nzTheme="outline"></span></a>
+                                    </td>
+                                    <td *ngIf=" data.isSoftDeleted">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <div [nzGutter]="24">
+                        <div nz-col [nzSpan]="12">
+                            <div class="clearfix">
+                                <nz-upload [nzBeforeUpload]="beforeUploadAttribute"
+                                    [nzCustomRequest]="handleUploadProductImage" nzListType="picture" [nzLimit]="5"
+                                    [nzMultiple]="true" [(nzFileList)]="listFileUpload">
+                                    <button nz-button>
+                                        <span nz-icon nzType="upload"></span>
+                                        Tải ảnh lên
+                                    </button>
+                                </nz-upload>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-row style="overflow-y: auto; max-height: 500px;">
+                        <div [nzSpan]="6" *ngFor="let img of productImages">
+                            <!-- <input type="checkbox" [(ngModel)]="img.checked" style="width: 20px; height: 20px;"> -->
+                            <a><span nz-icon nzType="delete" (click)="deleteImage(img.id)"
+                                    nzTheme="outline"></span></a><br>
+                            <img style="margin: 5px;" src="{{URL_Upload}}/{{img.image ?? ''}}" alt="" width="100px"
+                                height="100px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="handleCancel()">Đóng</button>
+    </div>
+</nz-modal>
