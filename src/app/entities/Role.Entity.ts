@@ -1,4 +1,5 @@
 import { BaseEntity } from "./Base.Entity";
+import { SearchEntity } from "./Search.Entity";
 
 export class RoleEntity extends BaseEntity {
     code!: string | null;
@@ -7,7 +8,7 @@ export class RoleEntity extends BaseEntity {
     isAdmin!: boolean | null;
 }
 
-export class RoleEntitySearch extends BaseEntity {
+export class RoleEntitySearch extends SearchEntity {
     code!: string | null;
     name!: string | null;
     isActive!: boolean | null;

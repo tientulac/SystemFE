@@ -4,19 +4,13 @@ import { LoginComponent } from './modules/login/login.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'main',
     loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule),
   },
   {
-    path: 'login',
+    path: '',
     component: LoginComponent
   },
-  // children: [
-  //   {
-  //     path: 'login',
-  //     component: LoginComponent
-  //   },
-  // ],
   { path: '**', redirectTo: '' },
 ];
 

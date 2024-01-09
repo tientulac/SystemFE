@@ -31,7 +31,7 @@ export class RoleComponent extends BaseComponent<RoleEntity> {
     this.Entities = new Array<RoleEntity>();;
     this.URL = 'role';
     this.URL_Upload = appConfig.URL_UPLOAD;
-    this.title.setTitle('Quyền');
+    this.title.setTitle('Quản lý quyền');
     this.field_Validation = {
       code: false,
       name: false
@@ -43,14 +43,13 @@ export class RoleComponent extends BaseComponent<RoleEntity> {
     this.getList();
   }
 
-  async onSubmit(): Promise<boolean> {
+  onSubmit() {
     this.onSubmitting = true;
     if (!this.isSubmit) {
       this.toastr.warning('Dữ liệu nhập chưa hợp lệ');
-      return false;
+      return;
     }
     this.save();
-    return true;
   }
 
   openModal(type: any, data: RoleEntity) {

@@ -13,7 +13,7 @@
             </div>
         </a>
         <ul nz-menu nzTheme="dark" nzMode="inline">
-            <li nz-submenu nzTitle="{{userInfo?.fullName | uppercase}}" nzIcon="user">
+            <li nz-submenu nzTitle="{{userInfo?.userName | uppercase}}" nzIcon="user">
                 <ul>
                     <li nz-menu-item>
                         <a (click)="openModal('INFO', userInfo)">Thông tin cá nhân</a>
@@ -30,34 +30,10 @@
             <li nz-submenu nzTitle="Master Data" nzIcon="file">
                 <ul>
                     <li nz-menu-item>
-                        <a routerLink="category/catalog">Danh mục</a>
-                    </li>
-                    <li nz-menu-item>
-                        <a routerLink="category/brand">Thương hiệu</a>
-                    </li>
-                    <li nz-menu-item>
-                        <a routerLink="category/producer">Nhà sản xuất</a>
+                        <a routerLink="main/category/catalog">Danh mục</a>
                     </li>
                 </ul>
             </li>
-            <li nz-submenu nzTitle="Sản phẩm" nzIcon="appstore">
-                <ul>
-                    <li nz-menu-item>
-                        <a routerLink="product">Sản phẩm</a>
-                    </li>
-                    <!-- <li nz-menu-item>
-                        <a routerLink="product/statistic">Thống kê</a>
-                    </li> -->
-                </ul>
-            </li>
-            <li nz-menu-item>
-                <span nz-icon nzType="book"></span>
-                <span> <a routerLink="feature/order">Hóa đơn</a></span>
-            </li>
-            <!-- <li nz-menu-item>
-                <span nz-icon nzType="home"></span>
-                <span> <a routerLink="feature/shopping">Bán hàng tại quầy</a></span>
-            </li> -->
             <li nz-menu-item>
                 <span nz-icon nzType="user"></span>
                 <span> <a routerLink="feature/role">Quyền</a></span>

@@ -14,7 +14,6 @@ import { BrowserModule } from "@angular/platform-browser";
 import { ToastrModule } from 'ngx-toastr';
 import { SetHeaderInterceptor } from "./interceptor/set-header.interceptor";
 import { LoginComponent } from "./modules/login/login.component";
-import { DashboardComponent } from "./modules/dashboard/dashboard.component";
 import { RouterModule } from "@angular/router";
 
 registerLocaleData(vi);

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ResponseAPI } from 'src/app/entities/ResponseAPI';
+import { UserAccountEntity, UserAccountLoginEntity } from 'src/app/entities/UserAccount.Entity';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -23,27 +25,27 @@ export class LoginComponent {
   login() {
     let req = {
       UserName: this._userName ?? '',
-      Hashpassword: this._password ?? ''
+      Password: this._password ?? ''
     }
     if (this._userName == '' || this._password == '') {
       this.toastr.warning('Thông tin không được để trống');
     }
     else {
       this.loginService.login(req).subscribe(
-        (res) => {
+        (res: ResponseAPI<UserAccountLoginEntity>) => {
           if (res.code == "200") {
             if (res.data.status != 1) {
               this.toastr.warning('Tài khoản chưa được kích hoạt');
               return;
             }
-            if (!res.data.role.code?.toLowerCase().includes('admin')) {
+            if (!(res.data.role?.code == '001')) {
               this.toastr.warning('Tài khoản không có quyền truy cập quản trị');
               return;
             }
             this.toastr.success("Đăng nhập thành công");
             localStorage.setItem('TOKEN', res.data.token?.toString() ?? '');
             localStorage.setItem('UserInfo', JSON.stringify(res.data) ?? {});
-            this.router.navigateByUrl('/main/feature/dashboard');
+            this.router.navigateByUrl('/main');
           }
           else {
             this.toastr.warning('Tên đăng nhập hoặc mật khẩu không chính xác');

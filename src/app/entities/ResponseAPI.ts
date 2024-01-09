@@ -1,4 +1,4 @@
-export class ReponseAPI<T> {
+export class ResponseAPI<T> {
     data!: T;
     code!: string | null;
     message!: string | null;
