@@ -4,19 +4,23 @@ import { MainComponent } from './main.component';
 
 const routes: Routes = [
     {
-        path: 'main',
+        path: '',
         component: MainComponent,
         children: [
             {
                 path: 'feature',
                 loadChildren: () => import('../feature/feature.module').then(m => m.FeatureModule)
             },
+            {
+                path: 'category',
+                loadChildren: () => import('../category/category.module').then(m => m.CategoryModule)
+            },
         ]
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
 export class MainRoutingModule { }

@@ -5,6 +5,7 @@ export interface AppConfiguration {
     dev: boolean;
     API: string;
     URL_UPLOAD: string;
+    URL_RECORD: string;
 }
 
 export const AppConfig = new InjectionToken<AppConfiguration>(

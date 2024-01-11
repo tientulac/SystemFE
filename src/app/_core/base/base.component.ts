@@ -3,10 +3,16 @@ import { Title } from '@angular/platform-browser';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { ToastrService } from 'ngx-toastr';
-import { ResponseAPI } from 'src/app/entities/ResponseAPI';
+import { PaginatedList, ResponseAPI } from 'src/app/entities/ResponseAPI';
 import { BaseService } from 'src/app/services/base.service';
 import { UploadImageService } from 'src/app/services/upload-image.service';
 import * as _ from 'lodash';
+
+interface statusModel {
+  id?: number | null;
+  code?: string | null;
+  name?: string | null;
+}
 
 @Component({
   selector: 'app-base',
@@ -17,8 +23,8 @@ import * as _ from 'lodash';
 export class BaseComponent<T> {
 
   Entity!: T | null | any;
-  EntitySearch!: T | {};
-  Entities!: T[];
+  EntitySearch!: any | {};
+  Entities!: T[] | null | undefined;
   URL: string = '';
   field_Validation: any = {};
   isSubmit: boolean = false;
@@ -34,6 +40,7 @@ export class BaseComponent<T> {
 
   uploadFileName: any = '';
   URL_Upload: any = '';
+  URL_Record: any = '';
   id_record: any = null;
   id_edit: any = null;
   isEdit: boolean = false;
@@ -48,6 +55,12 @@ export class BaseComponent<T> {
     ADD: false
   }
 
+  pageIndex = 1;
+  currentPage = 1;
+  pageSize = 10;
+  searchString = '';
+  totalCount = 0;
+  pageSizes = [10, 20, 30, 40]
   constructor(
     public baseService: BaseService<T>,
     public modal: NzModalService,
@@ -67,12 +80,16 @@ export class BaseComponent<T> {
 
   getList() {
     this.baseService.getByRequest(this.URL, this.EntitySearch).subscribe(
-      (res: ResponseAPI<T[]>) => {
+      (res: ResponseAPI<PaginatedList<T>>) => {
         if (res.code != '200') {
           this.handlerError(res);
-          return;
         }
-        this.Entities = res.data;
+        else {
+          this.Entities = res.data.items;
+          this.pageIndex = res.data.pageIndex ?? 0;
+          this.pageSize = res.data.pageSize ?? 0;
+          this.totalCount = res.data.totalCount ?? 0;
+        }
       }
     );
   }
@@ -121,6 +138,7 @@ export class BaseComponent<T> {
   }
 
   validateCustom() {
+    console.log(this.field_Validation);
     let values = Object.keys(this.field_Validation).map(key => this.field_Validation[key]);
     this.isSubmit = values.every(x => x == true);
   }
@@ -166,6 +184,9 @@ export class BaseComponent<T> {
 
   handlerError(response: ResponseAPI<any> | null) {
     this.toastr.warning(response?.message ?? '');
-    this.handleCancel();
+  }
+
+  renderNameStatus(list: statusModel[], value: any) {
+    return list?.find(x => x.id == value)?.name ?? '';
   }
 }

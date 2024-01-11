@@ -4,9 +4,10 @@ import { HeaderComponent } from "src/app/layouts/header/header.component";
 import { FooterComponent } from "src/app/layouts/footer/footer.component";
 import { SidebarComponent } from "src/app/layouts/sidebar/sidebar.component";
 import { MainComponent } from "./main.component";
-import { CommonNgZorroAntdModule } from "../ng-zorro-antd.module";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { UtilityModule } from "src/app/_core/ultility.module";
+import { BaseService } from "src/app/services/base.service";
+import { FeatureModule } from "../feature/feature.module";
+import { CategoryModule } from "../category/category.module";
 
 @NgModule({
     declarations: [
@@ -17,11 +18,12 @@ import { FormsModule } from "@angular/forms";
     ],
     imports: [
         MainRoutingModule,
-        CommonNgZorroAntdModule,
-        CommonModule,
-        FormsModule,
+        UtilityModule,
+        FeatureModule,
+        CategoryModule
     ],
     providers: [
+        BaseService
     ],
 })
 

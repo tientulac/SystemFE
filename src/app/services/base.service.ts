@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { AppConfig, AppConfiguration } from 'src/configuration';
-import { ResponseAPI } from '../entities/ResponseAPI';
+import { PaginatedList, ResponseAPI } from '../entities/ResponseAPI';
 
 @Injectable({
     providedIn: 'root',
@@ -17,8 +17,8 @@ export class BaseService<T> {
     ) {
     }
 
-    getByRequest(url: string, request: any | null): Observable<ResponseAPI<T[]>> {
-        return this.http.post<ResponseAPI<T[]>>(this.appConfig.API + url + '/get-by-request', request).pipe(map((res) => { return res; }));
+    getByRequest(url: string, request: any | null): Observable<ResponseAPI<PaginatedList<T>>> {
+        return this.http.post<ResponseAPI<PaginatedList<T>>>(this.appConfig.API + url + '/get-by-request', request).pipe(map((res) => { return res; }));
     }
 
     getAll(url: string): Observable<ResponseAPI<T[]>> {

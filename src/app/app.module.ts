@@ -15,6 +15,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { SetHeaderInterceptor } from "./interceptor/set-header.interceptor";
 import { LoginComponent } from "./modules/login/login.component";
 import { RouterModule } from "@angular/router";
+import { LoginService } from "./services/login.service";
 
 registerLocaleData(vi);
 
@@ -43,7 +44,8 @@ registerLocaleData(vi);
       useClass: SetHeaderInterceptor,
       multi: true
     },
-    BaseService
+    BaseService,
+    LoginService
   ],
   bootstrap: [AppComponent]
 })

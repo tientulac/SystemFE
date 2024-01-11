@@ -1,0 +1,126 @@
+<app-group-button [GROUP_BUTTON]="GROUP_BUTTON" (searchEvent)="search()"
+    (filterEvent)="displayFilter()"></app-group-button>
+
+<nz-modal *ngIf="isInsert" [(nzVisible)]="isInsert" nzTitle="Người dùng" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="onSubmit()">
+    <ng-container *nzModalContent>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="24">
+                <app-select-custom
+                    [CLASSNAME]="(!field_Validation.categoryTypeId && onSubmitting) ? 'invalid-form' : ''"
+                    [LABEL]="'Quyền'" (changeSelect)="field_Validation.roleId = $event; validateCustom()"
+                    [PLACEHOLDER]="'Chọn quyền'" [REQUIRED]="true" [TYPE]="'NORMAL'" [(VALUE)]="Entity.roleId"
+                    [LISTOPTION]="listRole" [LABEL_SELECT]="'name'" [VALUE_SELECT]="'id'" [FIELD]="'roleId'"
+                    [ENTITY]="Entity">
+                </app-select-custom>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <app-input-custom [LABEL]="'Email'" [PLACEHOLDER]="'Nhập Email'" [TYPE]="'text'" [ENTITY]="Entity"
+                    [FIELD]="'email'" [(VALUE)]="Entity.email">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="24" *ngIf="Entity.id">
+                <app-select-custom [CLASSNAME]="(!field_Validation.status && onSubmitting) ? 'invalid-form' : ''"
+                    [LABEL]="'Trạng thái'" (changeSelect)="field_Validation.status = $event; validateCustom()"
+                    [PLACEHOLDER]="'Chọn trạng thái'" [REQUIRED]="true" [TYPE]="'NORMAL'" [(VALUE)]="Entity.status"
+                    [LISTOPTION]="statuses" [LABEL_SELECT]="'name'" [VALUE_SELECT]="'id'" [FIELD]="'status'"
+                    [ENTITY]="Entity">
+                </app-select-custom>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <br>
+                <div class="clearfix">
+                    <nz-upload [nzBeforeUpload]="beforeUpload" [nzCustomRequest]="handleUpload" nzListType="picture"
+                        [nzLimit]="1" [(nzFileList)]="listFileUpload">
+                        <img *ngIf="Entity.image" src="{{URL_Upload}}/{{Entity.image ?? ''}}" class="img_logo">
+                        <button nz-button>
+                            <span nz-icon nzType="upload"></span>
+                            Tải ảnh lên
+                        </button>
+                    </nz-upload>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
+
+<section class="content cus-body" *ngIf="isFilter">
+    <div class="card">
+        <div class="card-body">
+            <div [nzGutter]="24">
+                <form nz-form nzLayout="vertical" nz-row>
+                    <div nz-col [nzSpan]="24">
+                        <nz-form-item>
+                            <nz-form-label>Tên đăng nhập</nz-form-label>
+                            <nz-input-group [nzSuffix]="suffixIconSearch">
+                                <input type="text" nz-input placeholder="Nhập tìm kiếm"
+                                    [(ngModel)]="EntitySearch.userName" />
+                            </nz-input-group>
+                            <ng-template #suffixIconSearch>
+                                <span nz-icon nzType="search"></span>
+                            </ng-template>
+                        </nz-form-item>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content cus-body">
+    <div class="card">
+        <div class="card-body">
+            <nz-table #basicTable [nzData]="Entities" [nzBordered]="true" [nzFrontPagination]="false"
+                [nzShowPagination]="false">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã</th>
+                        <th>Tên tài khoản</th>
+                        <th>Avatar</th>
+                        <th>Quyền</th>
+                        <th>Điện thoại đăng ký</th>
+                        <th>Email</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                        <th>Ngày sửa</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data; let i =index"
+                        [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                        <td>{{i+1}}</td>
+                        <td>{{data.code}}</td>
+                        <td>{{data.userName}}</td>
+                        <td><img src="{{URL_Upload}}/{{data.image ?? ''}}" class="img_logo"></td>
+                        <td>{{data?.role?.name ?? ''}}</td>
+                        <td>{{data.phone}}</td>
+                        <td>{{data.email}}</td>
+                        <td>{{renderNameStatus(statuses, data.status)}}</td>
+                        <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td *ngIf="!data.isSoftDeleted">
+                            <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
+                                    nzTheme="outline"></span></a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a><span nz-icon nzType="delete" (click)="isDisplayDelete = true; id_record = data.id"
+                                    nzTheme="outline"></span></a>
+
+                        </td>
+                        <td *ngIf="data.isSoftDeleted"></td>
+                    </tr>
+                </tbody>
+                <br>
+            </nz-table>
+            Hiển thị tổng {{totalCount}} Bản ghi
+            <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
+                nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
+                (nzPageIndexChange)="search()" (nzPageSizeChange)="getDataTable()">
+            </nz-pagination>
+        </div>
+    </div>
+</section>
+
+<app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
+    (handleCancelEvent)="handleCancel()"></app-delete-modal>

@@ -1,0 +1,138 @@
+<app-group-button [GROUP_BUTTON]="GROUP_BUTTON" (searchEvent)="search()"
+    (filterEvent)="displayFilter()"></app-group-button>
+
+
+<nz-modal *ngIf="isInsert" [(nzVisible)]="isInsert" nzTitle="Bài đăng" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="onSubmit()">
+    <ng-container *nzModalContent>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <app-input-custom [LABEL]="'Mã'" [MINLENGTH]="3" [MAXLENGTH]="10"
+                    (changeInput)="field_Validation.code = $event; validateCustom()" [PLACEHOLDER]="'Nhập mã'"
+                    [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'code'" [(VALUE)]="Entity.code">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <app-input-custom [LABEL]="'Hashtag'" [MINLENGTH]="3" [MAXLENGTH]="10"
+                    (changeInput)="field_Validation.hashtag = $event;" [PLACEHOLDER]="'Nhập hashtag'" [REQUIRED]="true"
+                    [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'hashtag'" [(VALUE)]="Entity.hashtag">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <label nz-checkbox [(ngModel)]="Entity.isIncognito">Ẩn danh</label>
+                <label nz-checkbox [(ngModel)]="Entity.isShown">Hiển thị</label>
+            </div>
+            <div nz-col [nzSpan]="24" *ngIf="Entity.id">
+                <app-select-custom [CLASSNAME]="(!field_Validation.status && onSubmitting) ? 'invalid-form' : ''"
+                    [LABEL]="'Trạng thái'" (changeSelect)="field_Validation.status = $event; validateCustom()"
+                    [PLACEHOLDER]="'Chọn trạng thái'" [REQUIRED]="true" [TYPE]="'NORMAL'" [(VALUE)]="Entity.status"
+                    [LISTOPTION]="statuses" [LABEL_SELECT]="'name'" [VALUE_SELECT]="'id'" [FIELD]="'status'"
+                    [ENTITY]="Entity">
+                </app-select-custom>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
+
+<section class="content cus-body" *ngIf="isFilter">
+    <div class="card">
+        <div class="card-body">
+            <div [nzGutter]="24">
+                <form nz-form nzLayout="vertical" nz-row>
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>Mã</nz-form-label>
+                            <nz-input-group [nzSuffix]="suffixIconSearch">
+                                <input type="text" nz-input placeholder="Nhập tìm kiếm"
+                                    [(ngModel)]="EntitySearch.code" />
+                            </nz-input-group>
+                            <ng-template #suffixIconSearch>
+                                <span nz-icon nzType="search"></span>
+                            </ng-template>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>Tên</nz-form-label>
+                            <nz-input-group [nzSuffix]="suffixIconSearch">
+                                <input type="text" nz-input placeholder="Nhập tìm kiếm"
+                                    [(ngModel)]="EntitySearch.name" />
+                            </nz-input-group>
+                            <ng-template #suffixIconSearch>
+                                <span nz-icon nzType="search"></span>
+                            </ng-template>
+                        </nz-form-item>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content cus-body">
+    <div class="card">
+        <div class="card-body">
+            <nz-table #basicTable [nzData]="Entities" [nzBordered]="true" [nzFrontPagination]="false"
+                [nzShowPagination]="false">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Title</th>
+                        <th>Người đăng</th>
+                        <th>Poster</th>
+                        <th>Hashtag</th>
+                        <th>Ẩn danh</th>
+                        <th>Danh mục</th>
+                        <th>Trạng thái</th>
+                        <th>Loại</th>
+                        <th>Hiển thị</th>
+                        <th>Audio</th>
+                        <th>Ngày tạo</th>
+                        <th>Ngày sửa</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data; let i =index"
+                        [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                        <td>{{i+1}}</td>
+                        <td>{{data.code}}</td>
+                        <td>{{data.name}}</td>
+                        <td>{{data.title}}</td>
+                        <td>{{data?.userAccount?.userName ?? ''}}</td>
+                        <td><img src="{{URL_Upload}}/{{data.poster ?? ''}}" class="img_logo"></td>
+                        <td>{{data.hashtag}}</td>
+                        <td>{{data.isIncognito}}</td>
+                        <td>{{data?.category?.name ?? ''}}</td>
+                        <td>{{renderNameStatus(statuses, data.status)}}</td>
+                        <td>{{renderNameStatus(types, data.type)}}</td>
+                        <td>{{data.isShown}}</td>
+                        <td>
+                            <audio *ngIf="data.type == 1" controls>
+                                <source src="{{URL_Record}}/{{data.path ?? ''}}" type="audio/mp3">
+                            </audio>
+                        </td>
+                        <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td *ngIf="!data.isSoftDeleted">
+                            <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
+                                    nzTheme="outline"></span></a>
+                        </td>
+                        <td *ngIf="data.isSoftDeleted"></td>
+                    </tr>
+                </tbody>
+                <br>
+            </nz-table>
+            Hiển thị tổng {{totalCount}} Bản ghi
+            <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
+                nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
+                (nzPageIndexChange)="search()" (nzPageSizeChange)="getDataTable()">
+            </nz-pagination>
+        </div>
+    </div>
+</section>
+
+<app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
+    (handleCancelEvent)="handleCancel()"></app-delete-modal>

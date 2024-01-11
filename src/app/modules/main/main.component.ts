@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from 'src/app/_core/base/base.component';
@@ -20,7 +20,8 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
   userInfo = new UserAccountEntity();
 
   constructor(
-    public router: Router
+    public router: Router,
+    public route: ActivatedRoute
   ) {
     super(
       AppInjector.get(BaseService<UserAccountEntity>),

@@ -1,4 +1,4 @@
-<nz-form-label [nzSm]="6" [nzXs]="24" [nzRequired]="REQUIRED">{{LABEL}}</nz-form-label><br>
+<nz-form-label [nzSm]="6" [nzXs]="24" [nzSpan]="24" [nzRequired]="REQUIRED">{{LABEL}}</nz-form-label><br>
 <nz-select nzShowSearch nzAllowClear nz-input [nzStatus]="!VALID ? 'error' : ''" [nzPlaceHolder]="PLACEHOLDER"
     [class]="CLASSNAME" [(ngModel)]="VALUE" *ngIf="TYPE == 'NORMAL'" [nzDisabled]="DISABLED"
     (ngModelChange)="changeValueSelect()">

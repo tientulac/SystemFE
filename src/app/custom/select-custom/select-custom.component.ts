@@ -28,7 +28,7 @@ export class SelectCustomComponent {
   VALID_REQUIRED: boolean = true;
 
   ngOnInit() {
-    if (this.ENTITY.id) {
+    if (this.ENTITY?.id) {
       this.changeValueSelect();
     }
   }
@@ -36,7 +36,7 @@ export class SelectCustomComponent {
   changeValueSelect() {
     if (this.REQUIRED) {
       if (this.TYPE == 'NORMAL') {
-        this.VALID_REQUIRED = this.VALUE ? true : false;
+        this.VALID_REQUIRED = this.VALUE != null ? true : false;
       }
       else {
         this.VALID_REQUIRED = this.VALUE?.length > 0 ? true : false;

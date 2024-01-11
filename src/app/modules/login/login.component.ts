@@ -24,9 +24,9 @@ export class LoginComponent {
 
   login() {
     let req = {
-      UserName: this._userName ?? '',
-      Password: this._password ?? ''
-    }
+      userName: this._userName ?? '',
+      password: this._password ?? ''
+    };
     if (this._userName == '' || this._password == '') {
       this.toastr.warning('Thông tin không được để trống');
     }
@@ -45,7 +45,7 @@ export class LoginComponent {
             this.toastr.success("Đăng nhập thành công");
             localStorage.setItem('TOKEN', res.data.token?.toString() ?? '');
             localStorage.setItem('UserInfo', JSON.stringify(res.data) ?? {});
-            this.router.navigateByUrl('/main');
+            this.router.navigateByUrl('/main/category/topic-type');
           }
           else {
             this.toastr.warning('Tên đăng nhập hoặc mật khẩu không chính xác');

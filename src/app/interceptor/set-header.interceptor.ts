@@ -26,14 +26,14 @@ export class SetHeaderInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const modifiedRequest = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${this.TOKEN}`
+        Authorization: `${!this.TOKEN ? '' : 'Bearer ' + this.TOKEN}`
       }
     });
 
     return next.handle(modifiedRequest).pipe(
       tap((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
-          
+
         }
       }),
       catchError((error: any) => {

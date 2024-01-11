@@ -8,7 +8,7 @@
             </div>
             <div nz-col [nzSpan]="12">
                 <p style="color: white; font-weight: bold; font-size: 10px;margin-top: 6px;">
-                    Farm Production
+                    System UI
                 </p>
             </div>
         </a>
@@ -30,7 +30,24 @@
             <li nz-submenu nzTitle="Master Data" nzIcon="file">
                 <ul>
                     <li nz-menu-item>
-                        <a routerLink="main/category/catalog">Danh mục</a>
+                        <a routerLink="category/topic-type">Loại chủ đề</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li nz-menu-item>
+                        <a routerLink="category/topic">Chủ đề</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li nz-menu-item>
+                        <a routerLink="category/favorite-topic">Chủ đề ưa thích</a>
+                    </li>
+                </ul>
+            </li>
+            <li nz-submenu nzTitle="Bài đăng" nzIcon="book">
+                <ul>
+                    <li nz-menu-item>
+                        <a routerLink="feature/blog">Quản lý bài đăng</a>
                     </li>
                 </ul>
             </li>
@@ -40,7 +57,7 @@
             </li>
             <li nz-menu-item>
                 <span nz-icon nzType="team"></span>
-                <span> <a routerLink="feature/user-account">Người dùng</a></span>
+                <span> <a routerLink="feature/user">Người dùng</a></span>
             </li>
         </ul>
     </nz-sider>
@@ -61,19 +78,19 @@
     <ng-container *nzModalContent>
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="12">
-                <nz-form-label [nzSm]="6" [nzXs]="24">Email</nz-form-label>
+                <nz-form-label [nzSpan]="24">Email</nz-form-label>
                 <input nz-input placeholder="Nhập email" [(ngModel)]="Entity.email" type="text" />
             </div>
             <div nz-col [nzSpan]="12">
-                <nz-form-label [nzSm]="6" [nzXs]="24">Số điện thoại</nz-form-label>
+                <nz-form-label [nzSpan]="24">Số điện thoại</nz-form-label>
                 <input nz-input placeholder="Nhập sđt" [(ngModel)]="Entity.phone" type="text" />
             </div>
             <div nz-col [nzSpan]="12">
-                <nz-form-label [nzSm]="6" [nzXs]="24">Họ tên</nz-form-label>
+                <nz-form-label [nzSpan]="24">Họ tên</nz-form-label>
                 <input nz-input placeholder="Nhập họ tên" [(ngModel)]="Entity.fullName" type="text" />
             </div>
             <div nz-col [nzSpan]="12">
-                <nz-form-label [nzSm]="6" [nzXs]="24">Địa chỉ</nz-form-label>
+                <nz-form-label [nzSpan]="24">Địa chỉ</nz-form-label>
                 <input nz-input placeholder="Nhập địa chỉ" [(ngModel)]="Entity.address" type="text" />
             </div>
         </div>
