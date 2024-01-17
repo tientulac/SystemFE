@@ -16,13 +16,15 @@ import { SetHeaderInterceptor } from "./interceptor/set-header.interceptor";
 import { LoginComponent } from "./modules/login/login.component";
 import { RouterModule } from "@angular/router";
 import { LoginService } from "./services/login.service";
+import { FullScreenSpinnerComponent } from "./custom/full-screen-spinner/full-screen-spinner.component";
+import { LoadingService } from "./services/loading.service";
 
 registerLocaleData(vi);
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    LoginComponent
   ],
   imports: [
     AppRoutingModule,
@@ -45,7 +47,8 @@ registerLocaleData(vi);
       multi: true
     },
     BaseService,
-    LoginService
+    LoginService,
+    LoadingService
   ],
   bootstrap: [AppComponent]
 })

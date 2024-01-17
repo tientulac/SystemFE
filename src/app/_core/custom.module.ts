@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { InputCustomComponent } from '../custom/input-custom/input-custom.component';
 import { SelectCustomComponent } from '../custom/select-custom/select-custom.component';
 import { AppRoutingModule } from '../app.routing.module';
+import { FullScreenSpinnerComponent } from '../custom/full-screen-spinner/full-screen-spinner.component';
 
 @NgModule({
     imports: [
@@ -24,6 +25,7 @@ import { AppRoutingModule } from '../app.routing.module';
         BreadCrumbComponent,
         InputCustomComponent,
         SelectCustomComponent,
+        FullScreenSpinnerComponent,
     ],
     exports: [
         BaseComponent,
@@ -32,6 +34,7 @@ import { AppRoutingModule } from '../app.routing.module';
         BreadCrumbComponent,
         InputCustomComponent,
         SelectCustomComponent,
+        FullScreenSpinnerComponent,
     ],
 })
 export class CustomModule { }

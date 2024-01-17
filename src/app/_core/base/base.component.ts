@@ -37,10 +37,10 @@ export class BaseComponent<T> {
   isDisplayRatingBlog: boolean = false;
   isDisplayDetail: boolean = false;
   isInsertDetail: boolean = false;
+  isInsert: boolean = false;
   isShownInfo = false;
   isChangePass = false;
   isFilter: boolean = false;
-  isInsert: boolean = false;
 
   uploadFileName: any = '';
   URL_Upload: any = '';
@@ -148,7 +148,16 @@ export class BaseComponent<T> {
   }
 
   handleCancel(): void {
-    this.modal.closeAll();
+    this.isInsert = false;
+    this.isDisplayDelete = false;
+    this.isDisplayCustomerInfo = false;
+    this.isDisplayRatingBlog = false;
+    this.isDisplayDetail = false;
+    this.isInsertDetail = false;
+    this.isShownInfo = false;
+    this.isChangePass = false;
+
+    // this.modal.closeAll();
     this.getList();
   }
 

@@ -65,6 +65,7 @@ export class DashboardComponent extends BaseComponent<BlogEntity> {
   }
 
   getDataDashboard() {
+    this.isLoading = true;
     this.dashboardService.postAsync('Dashboard/get-count-dashboard', {}).subscribe(
       (res: ResponseAPI<ResponseDashboard>) => {
         this.dataDashboard = res.data;
@@ -92,5 +93,6 @@ export class DashboardComponent extends BaseComponent<BlogEntity> {
         });
       }
     );
+    this.isLoading = false;
   }
 }

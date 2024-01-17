@@ -20,7 +20,7 @@ import { CategoryModule } from "../category/category.module";
         MainRoutingModule,
         UtilityModule,
         FeatureModule,
-        CategoryModule
+        CategoryModule,
     ],
     providers: [
         BaseService

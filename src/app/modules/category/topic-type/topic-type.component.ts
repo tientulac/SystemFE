@@ -66,23 +66,30 @@ export class TopicTypeComponent extends BaseComponent<CategoryTypeEntity> {
   }
 
   onSubmit() {
+    this.isLoading = true;
     this.onSubmitting = true;
     if (!this.isSubmit) {
       this.toastr.warning('Dữ liệu nhập chưa hợp lệ');
       return;
     }
     this.save();
+    this.isLoading = false;
   }
 
   openModal(type: any, data: CategoryTypeEntity) {
-    this.isInsert = true;
-    this.Entity = new CategoryTypeEntity();
-    if (type === 'EDIT') {
-      this.Entity = data;
-    }
-    else {
+    if (type === 'ADD') {
+      this.isInsert = true;
+      this.Entity = new CategoryTypeEntity();
       this.field_Validation.status = true;
       this.Entity.status = 0;
+    }
+    if (type === 'EDIT') {
+      this.isInsert = true;
+      this.Entity = data;
+    }
+    if (type === 'DELETE') {
+      this.isDisplayDelete = true;
+      this.id_record = data.id;
     }
   }
 

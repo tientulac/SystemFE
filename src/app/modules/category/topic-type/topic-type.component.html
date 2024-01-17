@@ -123,7 +123,7 @@
                             <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
                                     nzTheme="outline"></span></a>
                             <nz-divider nzType="vertical"></nz-divider>
-                            <a><span nz-icon nzType="delete" (click)="isDisplayDelete = true; id_record = data.id"
+                            <a><span nz-icon nzType="delete" (click)="openModal('DELETE', data)"
                                     nzTheme="outline"></span></a>
 
                         </td>
@@ -143,3 +143,5 @@
 
 <app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
     (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

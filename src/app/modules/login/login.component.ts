@@ -1,25 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
+import { BaseComponent } from 'src/app/_core/base/base.component';
+import { AppInjector } from 'src/app/app.module';
 import { ResponseAPI } from 'src/app/entities/ResponseAPI';
 import { UserAccountEntity, UserAccountLoginEntity } from 'src/app/entities/UserAccount.Entity';
+import { BaseService } from 'src/app/services/base.service';
+import { LoadingService } from 'src/app/services/loading.service';
 import { LoginService } from 'src/app/services/login.service';
+import { UploadImageService } from 'src/app/services/upload-image.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent extends BaseComponent<UserAccountEntity> implements OnInit {
 
   _userName: any = '';
   _password: any = '';
 
   constructor(
     public loginService: LoginService,
-    public toastr: ToastrService,
-    public router: Router
+    public router: Router,
+    public loadingService: LoadingService
   ) {
+    super(
+      AppInjector.get(BaseService<UserAccountEntity>),
+      AppInjector.get(NzModalService),
+      AppInjector.get(Title),
+      AppInjector.get(UploadImageService),
+      AppInjector.get(ToastrService),
+    );
+    this.title.setTitle('Đăng nhập');
+  }
+
+  ngOnInit(): void {
+    localStorage.clear();
   }
 
   login() {
