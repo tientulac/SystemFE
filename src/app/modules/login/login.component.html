@@ -1,34 +1,31 @@
-<div class="wrapper" style="margin: 10% auto;">
-
-    <div class="heading">
-        <h2>Xin chào !</h2>
-        <p>Thông tin đăng nhập</p>
-    </div>
-
-    <div class="input-group">
-        <input type="text" id="username" class="input-field" placeholder="Username" [(ngModel)]="_userName">
-    </div>
-
-    <div class="input-group">
-        <input type="password" id="password" class="input-field" [(ngModel)]="_password">
-    </div>
-
-    <div class="input-group row">
-
-        <div class="row">
-            <input type="checkbox" id="remember" hidden>
-            <label for="remember" class="custom-checkbox"></label>
-            <label for="remember">Remember me?</label>
+<div class="container">
+    <div class="left-section"></div>
+    <div class="right-section">
+        <div class="login-container">
+            <form class="login-form">
+                <h2 class="login-title"><i class="fas fa-user-circle"></i>Đăng nhập quản trị</h2>
+                <div class="form-control">
+                    <i class="fas fa-user icon" style="padding-top: 10px; padding-left: 10px;"></i>
+                    <input type="text" placeholder="Tên đăng nhập" id="username" required [(ngModel)]="_userName">
+                </div>
+                <div class="form-control">
+                    <i class="fas fa-lock icon" style="padding-top: 10px; padding-left: 10px;"></i>
+                    <input type="password" placeholder="Mật khẩu" id="password" [(ngModel)]="_password">
+                </div>
+                <div class="form-control">
+                    <div class="remember-me">
+                        <input type="checkbox" id="rememberMe" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <label for="rememberMe">Ghi nhớ đăng nhập</label>
+                    </div>
+                </div>
+                <div class="social-login">
+                    <i class="fab fa-google social-icon"></i>
+                    <i class="fab fa-facebook-f social-icon"></i>
+                    <i class="fab fa-twitter social-icon"></i>
+                </div>
+                <button type="submit" (click)="login()">Đăng nhập</button>
+            </form>
         </div>
-
-        <div class="row">
-            <a href="#" target="_blank">Forgot password?</a>
-        </div>
     </div>
-
-
-    <div class="input-group">
-        <button (click)="login()">Login <i class="fa-solid fa-arrow-right"></i></button>
-    </div>
-
 </div>

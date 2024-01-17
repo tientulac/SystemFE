@@ -13,6 +13,7 @@ export class BlogEntity extends BaseEntity {
     poster?: string | null;
     hashtag?: string | null;
     isIncognito?: boolean | null;
+    incognitoName?: boolean | null;
     categoryId?: string | null;
     category?: CategoryEntity | null;
     status?: number | null;

@@ -93,12 +93,17 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Mã</th>
-                        <th>Hashtag</th>
-                        <th>Tên loại chủ đề</th>
+                        <th nzShowSort [nzSortOrder]="sortOrder"
+                            (nzSortOrderChange)="onSortOrderChange('Code', $event)">
+                            Mã</th>
+                        <th nzShowSort [nzSortOrder]="sortOrder"
+                            (nzSortOrderChange)="onSortOrderChange('Hashtag', $event)">Hashtag</th>
+                        <th nzShowSort [nzSortOrder]="sortOrder"
+                            (nzSortOrderChange)="onSortOrderChange('Name', $event)">Tên loại chủ đề</th>
                         <th>Ảnh</th>
                         <th>Trạng thái</th>
-                        <th>Ngày tạo</th>
+                        <th nzShowSort [nzSortOrder]="sortOrder"
+                            (nzSortOrderChange)="onSortOrderChange('CreatedAt', $event)">Ngày tạo</th>
                         <th>Ngày sửa</th>
                         <th>Hành động</th>
                     </tr>

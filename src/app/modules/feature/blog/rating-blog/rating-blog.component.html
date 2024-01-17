@@ -1,0 +1,75 @@
+<nz-modal *ngIf="SHOWRATINGBLOG" [(nzVisible)]="SHOWRATINGBLOG" [nzTitle]="'Đánh giá bài viết'" [nzWidth]="1500"
+    (nzOnCancel)="closeModal()">
+    <ng-container *nzModalContent>
+        <nz-table #basicTable [nzData]="Entities" [nzBordered]="true" [nzFrontPagination]="false"
+            [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tài khoản</th>
+                    <th>Bình luận</th>
+                    <th>Like</th>
+                    <th>Audio</th>
+                    <th>Ẩn danh</th>
+                    <th>Tên ẩn danh</th>
+                    <th>Ghi chú</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data; let i =index" [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                    <td>{{i+1}}</td>
+                    <td>{{data.userAccount.userName}}</td>
+                    <td>{{data.comment}}</td>
+                    <td>{{data.isLike}}</td>
+                    <td>
+                        <audio *ngIf="data.type == 1" controls>
+                            <source src="{{URL_Record}}/{{data.path ?? ''}}" type="audio/mp3">
+                        </audio>
+                    </td>
+                    <td>{{data.isIncognito}}</td>
+                    <td>{{data.incognitoName}}</td>
+                    <td *ngIf="!data.isEdit">{{data.reason}}</td>
+                    <td *ngIf="data.isEdit">
+                        <input type="text" [(ngModel)]="data.reason" value="{{data.reason}}">
+                    </td>
+                    <td *ngIf="!data.isEdit">{{renderNameStatus(statuses, data.status)}}</td>
+                    <td *ngIf="data.isEdit">
+                        <nz-select nzShowSearch nzAllowClear nz-input [nzStatus]="!data.status ? 'error' : ''"
+                            nzPlaceHolder="Chọn trạng thái" [(ngModel)]="data.status">
+                            <nz-option *ngFor="let option of statuses" [nzLabel]="option.name"
+                                [nzValue]="option.id"></nz-option>
+                        </nz-select>
+                    </td>
+                    <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                    <td>
+                        <a><span nz-icon nzType="edit" (click)="data.isEdit = !data.isEdit"
+                                nzTheme="outline"></span></a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a *ngIf="data.isEdit"><span nz-icon nzType="check" (click)="submit(data)"
+                                nzTheme="outline"></span></a>
+                        <nz-divider *ngIf="data.isEdit" nzType="vertical"></nz-divider>
+                        <a><span nz-icon nzType="delete" (click)="isDisplayDelete = true; id_record = data.id"
+                                nzTheme="outline"></span></a>
+                    </td>
+                </tr>
+            </tbody>
+            <br>
+        </nz-table>
+        Hiển thị tổng {{totalCount}} Bản ghi
+        <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
+            nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes" (nzPageIndexChange)="search()"
+            (nzPageSizeChange)="getDataTable()">
+        </nz-pagination>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="primary" (click)="save()">Lưu</button>
+        <button nz-button nzType="default" (click)="closeModal()">Đóng</button>
+    </div>
+</nz-modal>
+
+
+<app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
+    (handleCancelEvent)="handleCancel()"></app-delete-modal>

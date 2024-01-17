@@ -78,12 +78,13 @@
                     <tr>
                         <th>STT</th>
                         <th>Mã</th>
-                        <th>Tên</th>
+                        <th>Nội dung</th>
                         <th>Title</th>
                         <th>Người đăng</th>
                         <th>Poster</th>
                         <th>Hashtag</th>
                         <th>Ẩn danh</th>
+                        <th>Tên ẩn danh</th>
                         <th>Danh mục</th>
                         <th>Trạng thái</th>
                         <th>Loại</th>
@@ -99,12 +100,13 @@
                         [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
                         <td>{{i+1}}</td>
                         <td>{{data.code}}</td>
-                        <td>{{data.name}}</td>
+                        <td>{{data.content}}</td>
                         <td>{{data.title}}</td>
                         <td>{{data?.userAccount?.userName ?? ''}}</td>
                         <td><img src="{{URL_Upload}}/{{data.poster ?? ''}}" class="img_logo"></td>
                         <td>{{data.hashtag}}</td>
                         <td>{{data.isIncognito}}</td>
+                        <td>{{data.incognitoName}}</td>
                         <td>{{data?.category?.name ?? ''}}</td>
                         <td>{{renderNameStatus(statuses, data.status)}}</td>
                         <td>{{renderNameStatus(types, data.type)}}</td>
@@ -118,6 +120,9 @@
                         <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
                         <td *ngIf="!data.isSoftDeleted">
                             <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
+                                    nzTheme="outline"></span></a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a><span nz-icon nzType="comment" (click)="isDisplayRatingBlog = true; id_record = data.id"
                                     nzTheme="outline"></span></a>
                         </td>
                         <td *ngIf="data.isSoftDeleted"></td>
@@ -136,3 +141,6 @@
 
 <app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
     (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<app-rating-blog [ID]="id_record" *ngIf="isDisplayRatingBlog" [SHOWRATINGBLOG]="isDisplayRatingBlog"
+    (handleCancelEvent)="handleCancel()"></app-rating-blog>

@@ -1,0 +1,37 @@
+<nz-modal *ngIf="SHOWCUSTOMERINFO" [(nzVisible)]="SHOWCUSTOMERINFO" [nzTitle]="'Thông tin người dùng'" [nzWidth]="1200"
+    (nzOnCancel)="closeModal()">
+    <ng-container *nzModalContent>
+        <nz-table #basicTable [nzData]="Entities" [nzBordered]="true" [nzFrontPagination]="false"
+            [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã</th>
+                    <th>Họ tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Địa chỉ</th>
+                    <th>Giới tính</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data; let i =index" [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                    <td>{{i+1}}</td>
+                    <td>{{data.code}}</td>
+                    <td>{{data.fullName}}</td>
+                    <td>{{data.birth | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                    <td>{{data.address}}</td>
+                    <td>{{data.gender == 0 ? 'Nữ' : 'Nam'}}</td>
+                </tr>
+            </tbody>
+            <br>
+        </nz-table>
+        Hiển thị tổng {{totalCount}} Bản ghi
+        <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
+            nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes" (nzPageIndexChange)="search()"
+            (nzPageSizeChange)="getDataTable()">
+        </nz-pagination>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="closeModal()">Đóng</button>
+    </div>
+</nz-modal>

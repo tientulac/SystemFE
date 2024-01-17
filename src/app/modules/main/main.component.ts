@@ -70,11 +70,11 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
       );
     }
     if (this.isChangePass) {
-      if (!this.Entity?.oldHashPassword || !this.Entity?.newHashPassword) {
+      if (!this.Entity?.oldHashPassword || !this.Entity?.newHashPassword || !this.Entity?.confirmHashPassword) {
         this.toastr.warning('Mật khẩu không được bỏ trống');
         return false;
       }
-      if (this.Entity?.oldHashPassword != this.Entity?.newHashPassword) {
+      if (this.Entity?.newHashPassword != this.Entity?.confirmHashPassword) {
         this.toastr.warning('Xác nhận mật khẩu chưa đúng');
         return false;
       }
@@ -83,6 +83,9 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
           if (res.code == '200') {
             this.toastr.success('Thành công. Hệ thống sẽ yêu cầu đăng nhập lại sau 3s');
             setTimeout(this.logout, 3000);
+          }
+          else if (res.code == '404') {
+            this.toastr.warning('Mật khẩu hiện tại không đúng');
           }
           else {
             this.toastr.warning(res.message ?? '');

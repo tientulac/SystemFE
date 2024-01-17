@@ -32,3 +32,15 @@ export const LIST_STATUS_USER = [
     { id: 3, code: 'Approve', name: 'Duyệt' },
     { id: 4, code: 'Awaiting_Approve', name: 'Chờ duyệt' },
 ];
+
+export const LIST_STATUS_RATING_BLOG = [
+    { id: 0, code: 'Show', name: 'Hiển thị' },
+    { id: 1, code: 'Hide', name: 'Ẩn' },
+    { id: 2, code: 'Approve', name: 'Đã duyệt' },
+    { id: 3, code: 'AwaitingApprove', name: 'Chờ duyệt' },
+];
+
+export const LIST_TYPE_RATING_BLOG = [
+    { id: 0, code: 'Text', name: 'Text' },
+    { id: 1, code: 'File', name: 'File' },
+];

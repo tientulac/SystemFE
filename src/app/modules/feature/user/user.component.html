@@ -104,6 +104,9 @@
                             <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
                                     nzTheme="outline"></span></a>
                             <nz-divider nzType="vertical"></nz-divider>
+                            <a><span nz-icon nzType="book" (click)="isDisplayCustomerInfo = true; id_record = data.id"
+                                    nzTheme="outline"></span></a>
+                            <nz-divider nzType="vertical"></nz-divider>
                             <a><span nz-icon nzType="delete" (click)="isDisplayDelete = true; id_record = data.id"
                                     nzTheme="outline"></span></a>
 
@@ -124,3 +127,6 @@
 
 <app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
     (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<app-user-customer [ID]="id_record" *ngIf="isDisplayCustomerInfo" [SHOWCUSTOMERINFO]="isDisplayCustomerInfo"
+    (handleCancelEvent)="handleCancel()"></app-user-customer>

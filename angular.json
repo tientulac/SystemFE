@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "farm-ui": {
+    "system-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
             "allowedCommonJsDependencies": [
               "@ckeditor/ckeditor5-build-classic"
             ],
-            "outputPath": "dist/farm-ui",
+            "outputPath": "dist/system-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -48,12 +48,12 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
+                  "maximumWarning": "4kb",
                   "maximumError": "4kb"
                 }
               ],
@@ -74,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "farm-ui:build:production"
+              "browserTarget": "system-ui:build:production"
             },
             "development": {
-              "browserTarget": "farm-ui:build:development"
+              "browserTarget": "system-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -85,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "farm-ui:build"
+            "browserTarget": "system-ui:build"
           }
         },
         "test": {

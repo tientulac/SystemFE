@@ -112,4 +112,12 @@ export class TopicComponent extends BaseComponent<CategoryEntity> {
       this.Entity.status = 0;
     }
   }
+
+
+  onSortOrderChange(column: string, sortOrder: string): void {
+    this.sortOrder = sortOrder ? sortOrder : '';
+    this.EntitySearch.pagingAndSortingModel.orderColumn = column;
+    this.EntitySearch.pagingAndSortingModel.orderDirection = sortOrder === 'ascend' ? 'asc' : sortOrder === 'descend' ? 'desc' : '';
+    this.getDataTable();
+  }
 }

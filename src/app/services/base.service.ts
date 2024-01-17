@@ -44,5 +44,9 @@ export class BaseService<T> {
     search(url: string, request: any): Observable<ResponseAPI<T[]>> {
         return this.http.post<ResponseAPI<T[]>>(this.appConfig.API + url + '/search', request).pipe(map((res) => { return res; }));
     }
+
+    postAsync(url: string, request: any | null): Observable<ResponseAPI<any>> {
+        return this.http.post<ResponseAPI<any>>(this.appConfig.API + url, request).pipe(map((res) => { return res; }));
+    }
 }
 

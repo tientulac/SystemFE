@@ -6,7 +6,7 @@
     <ng-container *nzModalContent>
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="12">
-                <app-input-custom [LABEL]="'Mã'" [MINLENGTH]="3" [MAXLENGTH]="10"
+                <app-input-custom [LABEL]="'Mã'" [MINLENGTH]="2" [MAXLENGTH]="10"
                     (changeInput)="field_Validation.code = $event; validateCustom()" [PLACEHOLDER]="'Nhập mã'"
                     [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'code'" [(VALUE)]="Entity.code">
                 </app-input-custom>
@@ -29,8 +29,8 @@
 <section class="content cus-body">
     <div class="card">
         <div class="card-body">
-            <nz-table #basicTable [nzData]="Entities" [nzBordered]="true">
-
+            <nz-table #basicTable [nzData]="Entities" [nzBordered]="true" [nzFrontPagination]="false"
+                [nzShowPagination]="false">
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -71,6 +71,11 @@
                     </tr>
                 </tbody>
             </nz-table>
+            Hiển thị tổng {{totalCount}} Bản ghi
+            <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
+                nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
+                (nzPageIndexChange)="search()" (nzPageSizeChange)="getDataTable()">
+            </nz-pagination>
         </div>
     </div>
 </section>

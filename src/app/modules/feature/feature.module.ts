@@ -5,12 +5,18 @@ import { RoleComponent } from "./role/role.component";
 import { FeatureRoutingModule } from "./feature.routing.module";
 import { BlogComponent } from "./blog/blog.component";
 import { UserComponent } from "./user/user.component";
+import { UserCustomerComponent } from "./user/user-customer/user-customer.component";
+import { RatingBlogComponent } from "./blog/rating-blog/rating-blog.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
 
 @NgModule({
     declarations: [
         RoleComponent,
         BlogComponent,
-        UserComponent
+        UserComponent,
+        UserCustomerComponent,
+        RatingBlogComponent,
+        DashboardComponent
     ],
     imports: [
         FeatureRoutingModule,

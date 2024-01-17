@@ -108,4 +108,11 @@ export class UserComponent extends BaseComponent<UserAccountEntity> {
       this.Entity = data;
     }
   }
+
+  onSortOrderChange(column: string, sortOrder: string): void {
+    this.sortOrder = this.sortOrder === 'ascend' ? 'descend' : 'ascend';
+    this.EntitySearch.pagingAndSortingModel.orderColumn = column;
+    this.EntitySearch.pagingAndSortingModel.orderDirection = sortOrder === 'ascend' ? 'asc' : sortOrder === 'descend' ? 'desc' : '';
+    this.getDataTable();
+  }
 }

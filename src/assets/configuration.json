@@ -1,7 +1,7 @@
 {
     "production": false,
     "dev": true,
-    "API": "https://localhost:44330/api/",
-    "URL_UPLOAD": "https://localhost:44330/api/Upload/GetImage?imgName=",
-    "URL_RECORD": "https://localhost:44330/api/Upload/GetRecord?fileName="
+    "API": "https://tientulac.bsite.net/api/",
+    "URL_UPLOAD": "https://tientulac.bsite.net/api/Upload/GetImage?imgName=",
+    "URL_RECORD": "https://tientulac.bsite.net/api/Upload/GetRecord?fileName="
 }

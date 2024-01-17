@@ -4,33 +4,31 @@ import { RoleEntity } from "./Role.Entity";
 import { SearchEntity } from "./Search.Entity";
 
 export class UserAccountEntity extends BaseEntity {
-    code?: string | null;
     userName?: string | null;
+    code?: string | null;
     hashpassword?: string | null;
-    roleId?: string | null;
-    phone?: string | null;
     image?: string | null;
     email?: string | null;
+    roleId?: string | null;
+    phone?: string | null;
     status?: number | null;
     role?: RoleEntity | null;
-    customerId?: string | null;
-    customer?: CustomerEntity | null;
+    oldHashPassword?: string | null;
+    newHashpassword?: string | null;
+    confirmHashPassword?: string | null;
 }
 
 export class UserAccountEntitySearch extends SearchEntity {
 }
 
 export class UserAccountLoginEntity extends BaseEntity {
-    code?: string | null;
     userName?: string | null;
-    hashpassword?: string | null;
-    roleId?: string | null;
+    code?: string | null;
     image?: string | null;
     email?: string | null;
     phone?: string | null;
     status?: number | null;
     role?: RoleEntity | null;
-    customerId?: string | null;
     customer?: CustomerEntity | null;
     token?: string | null;
 }

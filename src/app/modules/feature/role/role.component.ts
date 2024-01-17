@@ -4,6 +4,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from 'src/app/_core/base/base.component';
 import { AppInjector } from 'src/app/app.module';
+import { PaginationEntity } from 'src/app/entities/Pagination.Entity';
 import { RoleEntity, RoleEntitySearch } from 'src/app/entities/Role.Entity';
 import { BaseService } from 'src/app/services/base.service';
 import { UploadImageService } from 'src/app/services/upload-image.service';
@@ -16,6 +17,23 @@ import { AppConfig, AppConfiguration } from 'src/configuration';
 })
 export class RoleComponent extends BaseComponent<RoleEntity> {
 
+  override EntitySearch: RoleEntitySearch = {
+    code: null,
+    name: null,
+    isActive: null,
+    isAdmin: null,
+    id: null,
+    createdAt: null,
+    createdBy: null,
+    updatedAt: null,
+    updatedBy: null,
+    deletedAt: null,
+    deletedBy: null,
+    isSoftDeleted: null,
+    searchString: null,
+    pagingAndSortingModel: new PaginationEntity,
+  };
+
   constructor(
     @Inject(AppConfig) private readonly appConfig: AppConfiguration,
   ) {
@@ -27,8 +45,6 @@ export class RoleComponent extends BaseComponent<RoleEntity> {
       AppInjector.get(ToastrService),
     );
     this.Entity = new RoleEntity();
-    this.EntitySearch = new RoleEntitySearch();
-    this.Entities = new Array<RoleEntity>();;
     this.URL = 'role';
     this.URL_Upload = appConfig.URL_UPLOAD;
     this.title.setTitle('Quản lý quyền');
@@ -40,6 +56,12 @@ export class RoleComponent extends BaseComponent<RoleEntity> {
     this.GROUP_BUTTON.ADD = true;
     this.GROUP_BUTTON.RELOAD = true;
 
+    this.getDataTable();
+  }
+
+  getDataTable() {
+    this.EntitySearch.pagingAndSortingModel.pageIndex = this.pageIndex;
+    this.EntitySearch.pagingAndSortingModel.pageSize = this.pageSize;
     this.getList();
   }
 

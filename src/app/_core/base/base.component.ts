@@ -22,6 +22,8 @@ interface statusModel {
 
 export class BaseComponent<T> {
 
+  sortOrder: any;
+
   Entity!: T | null | any;
   EntitySearch!: any | {};
   Entities!: T[] | null | undefined;
@@ -31,6 +33,8 @@ export class BaseComponent<T> {
   onSubmitting: boolean = false;
 
   isDisplayDelete: boolean = false;
+  isDisplayCustomerInfo: boolean = false;
+  isDisplayRatingBlog: boolean = false;
   isDisplayDetail: boolean = false;
   isInsertDetail: boolean = false;
   isShownInfo = false;
@@ -71,7 +75,7 @@ export class BaseComponent<T> {
   }
 
   filesUpload: NzUploadFile[] = [];
-
+  isLoading: boolean = false;
   listFileUpload = [...this.filesUpload];
 
   search() {
