@@ -8,8 +8,6 @@
                     <th>STT</th>
                     <th>Tài khoản</th>
                     <th>Bình luận</th>
-                    <th>Like</th>
-                    <th>Audio</th>
                     <th>Ẩn danh</th>
                     <th>Tên ẩn danh</th>
                     <th>Ghi chú</th>
@@ -23,19 +21,16 @@
                     <td>{{i+1}}</td>
                     <td>{{data.userAccount.userName}}</td>
                     <td>{{data.comment}}</td>
-                    <td>{{data.isLike}}</td>
-                    <td>
-                        <audio *ngIf="data.type == 1" controls>
-                            <source src="{{URL_Record}}/{{data.path ?? ''}}" type="audio/mp3">
-                        </audio>
+                    <td *ngIf="data.isIncognito"><i style="color: green; font-weight: bold;"
+                            class="fa-solid fa-check"></i></td>
+                    <td *ngIf="!data.isIncognito"><i style="color: red; font-weight: bold;" class="fa-solid fa-x"></i>
                     </td>
-                    <td>{{data.isIncognito}}</td>
                     <td>{{data.incognitoName}}</td>
                     <td *ngIf="!data.isEdit">{{data.reason}}</td>
                     <td *ngIf="data.isEdit">
                         <input type="text" [(ngModel)]="data.reason" value="{{data.reason}}">
                     </td>
-                    <td *ngIf="!data.isEdit">{{renderNameStatus(statuses, data.status)}}</td>
+                    <td>{{renderNameStatus(statuses, data.status)}}</td>
                     <td *ngIf="data.isEdit">
                         <nz-select nzShowSearch nzAllowClear nz-input [nzStatus]="!data.status ? 'error' : ''"
                             nzPlaceHolder="Chọn trạng thái" [(ngModel)]="data.status">
@@ -60,8 +55,8 @@
         </nz-table>
         Hiển thị tổng {{totalCount}} Bản ghi
         <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
-            nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes" (nzPageIndexChange)="search()"
-            (nzPageSizeChange)="getDataTable()">
+            nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
+            (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
         </nz-pagination>
     </ng-container>
     <div *nzModalFooter>
@@ -73,3 +68,5 @@
 
 <app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
     (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

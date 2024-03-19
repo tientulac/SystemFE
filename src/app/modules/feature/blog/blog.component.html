@@ -7,13 +7,13 @@
     <ng-container *nzModalContent>
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="12">
-                <app-input-custom [LABEL]="'Mã'" [MINLENGTH]="3" [MAXLENGTH]="10"
+                <app-input-custom [LABEL]="'Mã'" [MINLENGTH]="1" [MAXLENGTH]="50"
                     (changeInput)="field_Validation.code = $event; validateCustom()" [PLACEHOLDER]="'Nhập mã'"
                     [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'code'" [(VALUE)]="Entity.code">
                 </app-input-custom>
             </div>
             <div nz-col [nzSpan]="12">
-                <app-input-custom [LABEL]="'Hashtag'" [MINLENGTH]="3" [MAXLENGTH]="10"
+                <app-input-custom [LABEL]="'Hashtag'" [MINLENGTH]="1" [MAXLENGTH]="50"
                     (changeInput)="field_Validation.hashtag = $event;" [PLACEHOLDER]="'Nhập hashtag'" [REQUIRED]="true"
                     [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'hashtag'" [(VALUE)]="Entity.hashtag">
                 </app-input-custom>
@@ -29,6 +29,19 @@
                     [LISTOPTION]="statuses" [LABEL_SELECT]="'name'" [VALUE_SELECT]="'id'" [FIELD]="'status'"
                     [ENTITY]="Entity">
                 </app-select-custom>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <app-input-custom [LABEL]="'Tên ẩn danh'" [PLACEHOLDER]="'Nhập tên'" [TYPE]="'text'" [ENTITY]="Entity"
+                    [FIELD]="'incognitoName'" [(VALUE)]="Entity.incognitoName">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <app-input-custom [LABEL]="'Ghi chú'" [PLACEHOLDER]="'Nhập ghi chú'" [TYPE]="'text'" [ENTITY]="Entity"
+                    [FIELD]="'reason'" [(VALUE)]="Entity.reason">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <label nz-checkbox [(ngModel)]="Entity.isNotify">Thông báo đẩy thay đổi trạng thái</label>
             </div>
         </div>
     </ng-container>
@@ -72,50 +85,55 @@
 <section class="content cus-body">
     <div class="card">
         <div class="card-body">
-            <nz-table #basicTable [nzData]="Entities" [nzBordered]="true" [nzFrontPagination]="false"
-                [nzShowPagination]="false">
+            <nz-table #scrollTable [nzData]="Entities" [nzBordered]="true" [nzFrontPagination]="false"
+                [nzScroll]="{ x: '100vw'}" [nzShowPagination]="false">
                 <thead>
                     <tr>
-                        <th>STT</th>
-                        <th>Mã</th>
-                        <th>Nội dung</th>
-                        <th>Title</th>
-                        <th>Người đăng</th>
-                        <th>Poster</th>
-                        <th>Hashtag</th>
-                        <th>Ẩn danh</th>
-                        <th>Tên ẩn danh</th>
-                        <th>Danh mục</th>
-                        <th>Trạng thái</th>
-                        <th>Loại</th>
-                        <th>Hiển thị</th>
-                        <th>Audio</th>
-                        <th>Ngày tạo</th>
-                        <th>Ngày sửa</th>
-                        <th>Hành động</th>
+                        <th nzWidth="75px">STT</th>
+                        <th nzWidth="100px">Mã</th>
+                        <th nzWidth="350px">Nội dung</th>
+                        <th nzWidth="200px">Title</th>
+                        <th nzWidth="100px">Người đăng</th>
+                        <th nzWidth="100px">Poster</th>
+                        <th nzWidth="100px">Hashtag</th>
+                        <th nzWidth="100px">Ẩn danh</th>
+                        <th nzWidth="200px">Tên ẩn danh</th>
+                        <th nzWidth="200px">Danh mục</th>
+                        <th nzWidth="200px">Trạng thái</th>
+                        <th nzWidth="100px">Loại</th>
+                        <th nzWidth="100px">Hiển thị</th>
+                        <th nzWidth="400px">Audio</th>
+                        <th nzWidth="200px">Lý do ẩn</th>
+                        <th nzWidth="200px">Ngày tạo</th>
+                        <th nzWidth="200px">Ngày sửa</th>
+                        <th nzWidth="200px">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of basicTable.data; let i =index"
+                    <tr *ngFor="let data of scrollTable.data; let i =index"
                         [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
-                        <td>{{i+1}}</td>
+                        <td>{{(i+1) + pageSize * (pageIndex -1)}}</td>
                         <td>{{data.code}}</td>
-                        <td>{{data.content}}</td>
+                        <td>{{renderContent(data.content)}}</td>
                         <td>{{data.title}}</td>
                         <td>{{data?.userAccount?.userName ?? ''}}</td>
-                        <td><img src="{{URL_Upload}}/{{data.poster ?? ''}}" class="img_logo"></td>
+                        <td><img src="{{URL_Upload}}{{data.poster ?? ''}}" class="img_logo"></td>
                         <td>{{data.hashtag}}</td>
-                        <td>{{data.isIncognito}}</td>
+                        <td *ngIf="data.isIncognito"><i style="color: green; font-weight: bold;"
+                                class="fa-solid fa-check"></i></td>
+                        <td *ngIf="!data.isIncognito"><i style="color: red; font-weight: bold;"
+                                class="fa-solid fa-x"></i></td>
                         <td>{{data.incognitoName}}</td>
                         <td>{{data?.category?.name ?? ''}}</td>
                         <td>{{renderNameStatus(statuses, data.status)}}</td>
                         <td>{{renderNameStatus(types, data.type)}}</td>
                         <td>{{data.isShown}}</td>
                         <td>
-                            <audio *ngIf="data.type == 1" controls>
+                            <audio *ngIf="data.type == 2" controls>
                                 <source src="{{URL_Record}}/{{data.path ?? ''}}" type="audio/mp3">
                             </audio>
                         </td>
+                        <td>{{data.reason}}</td>
                         <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
                         <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
                         <td *ngIf="!data.isSoftDeleted">
@@ -133,7 +151,7 @@
             Hiển thị tổng {{totalCount}} Bản ghi
             <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
                 nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
-                (nzPageIndexChange)="search()" (nzPageSizeChange)="getDataTable()">
+                (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
             </nz-pagination>
         </div>
     </div>
@@ -144,3 +162,5 @@
 
 <app-rating-blog [ID]="id_record" *ngIf="isDisplayRatingBlog" [SHOWRATINGBLOG]="isDisplayRatingBlog"
     (handleCancelEvent)="handleCancel()"></app-rating-blog>
+
+<app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

@@ -119,7 +119,7 @@
             Hiển thị tổng {{totalCount}} Bản ghi
             <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
                 nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
-                (nzPageIndexChange)="search()" (nzPageSizeChange)="getDataTable()">
+                (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
             </nz-pagination>
         </div>
     </div>
@@ -130,3 +130,5 @@
 
 <app-user-customer [ID]="id_record" *ngIf="isDisplayCustomerInfo" [SHOWCUSTOMERINFO]="isDisplayCustomerInfo"
     (handleCancelEvent)="handleCancel()"></app-user-customer>
+
+<app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

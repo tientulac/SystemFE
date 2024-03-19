@@ -7,13 +7,13 @@
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="12">
                 <app-input-custom [CLASSNAME]="(!field_Validation.name && onSubmitting) ? 'invalid-form' : ''"
-                    [LABEL]="'Mã'" [MINLENGTH]="3" [MAXLENGTH]="10" (changeInput)="field_Validation.code = $event;"
+                    [LABEL]="'Mã'" [MINLENGTH]="3" [MAXLENGTH]="100" (changeInput)="field_Validation.code = $event;"
                     [PLACEHOLDER]="'Nhập mã'" [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'code'"
                     [(VALUE)]="Entity.code">
                 </app-input-custom>
             </div>
             <div nz-col [nzSpan]="12">
-                <app-input-custom [LABEL]="'Hashtag'" [MINLENGTH]="3" [MAXLENGTH]="10"
+                <app-input-custom [LABEL]="'Hashtag'" [MINLENGTH]="3" [MAXLENGTH]="100"
                     (changeInput)="field_Validation.hashtag = $event;" [PLACEHOLDER]="'Nhập hashtag'" [REQUIRED]="true"
                     [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'hashtag'" [(VALUE)]="Entity.hashtag">
                 </app-input-custom>
@@ -121,12 +121,12 @@
                 <tbody>
                     <tr *ngFor="let data of basicTable.data; let i =index"
                         [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
-                        <td>{{i+1}}</td>
+                        <td>{{(i+1) + pageSize * (pageIndex -1)}}</td>
                         <td>{{data.code}}</td>
                         <td>{{data.hashtag}}</td>
                         <td>{{data.name}}</td>
                         <td>{{data?.categoryType?.name ?? ''}}</td>
-                        <td><img src="{{URL_Upload}}/{{data.image ?? ''}}" class="img_logo"></td>
+                        <td><img src="{{URL_Upload}}{{data.image ?? ''}}" class="img_logo"></td>
                         <td>{{renderNameStatus(statuses, data.status)}}</td>
                         <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
                         <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
@@ -146,7 +146,7 @@
             Hiển thị tổng {{totalCount}} Bản ghi
             <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
                 nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
-                (nzPageIndexChange)="search()" (nzPageSizeChange)="getDataTable()">
+                (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
             </nz-pagination>
         </div>
     </div>
@@ -154,3 +154,5 @@
 
 <app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
     (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from 'src/app/_core/base/base.component';
+import { ROUTE_PATH } from 'src/app/_core/constant';
 import { AppInjector } from 'src/app/app.module';
 import { UserAccountEntity } from 'src/app/entities/UserAccount.Entity';
 import { BaseService } from 'src/app/services/base.service';
@@ -18,6 +19,8 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
 
   isCollapsed = false;
   userInfo = new UserAccountEntity();
+  pathRouting: any;
+  recentURL: any;
 
   constructor(
     public router: Router,
@@ -32,6 +35,8 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
     );
     this.userInfo = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem('UserInfo')))) ?? {};
     this.Entity = this.userInfo;
+    this.pathRouting = ROUTE_PATH;
+    this.recentURL = this.router.url;
   }
 
   logout() {

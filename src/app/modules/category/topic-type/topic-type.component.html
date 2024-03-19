@@ -38,7 +38,7 @@
                 <div class="clearfix">
                     <nz-upload [nzBeforeUpload]="beforeUpload" [nzCustomRequest]="handleUpload" nzListType="picture"
                         [nzLimit]="1" [(nzFileList)]="listFileUpload">
-                        <img *ngIf="Entity.image" src="{{URL_Upload}}/{{Entity.image ?? ''}}" class="img_logo">
+                        <img *ngIf="Entity.image" src="{{URL_Upload}}{{Entity.image ?? ''}}" class="img_logo">
                         <button nz-button>
                             <span nz-icon nzType="upload"></span>
                             Tải ảnh lên
@@ -111,11 +111,11 @@
                 <tbody>
                     <tr *ngFor="let data of basicTable.data; let i =index"
                         [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
-                        <td>{{i+1}}</td>
+                        <td>{{(i+1) + pageSize * (pageIndex -1)}}</td>
                         <td>{{data.code}}</td>
                         <td>{{data.hashtag}}</td>
                         <td>{{data.name}}</td>
-                        <td><img src="{{URL_Upload}}/{{data.image ?? ''}}" class="img_logo"></td>
+                        <td><img src="{{URL_Upload}}{{data.image ?? ''}}" class="img_logo"></td>
                         <td>{{renderNameStatus(statuses, data.status)}}</td>
                         <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
                         <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
@@ -135,7 +135,7 @@
             Hiển thị tổng {{totalCount}} Bản ghi
             <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
                 nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
-                (nzPageIndexChange)="search()" (nzPageSizeChange)="getDataTable()">
+                (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
             </nz-pagination>
         </div>
     </div>

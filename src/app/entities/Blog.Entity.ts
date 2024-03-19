@@ -21,6 +21,8 @@ export class BlogEntity extends BaseEntity {
     isShown?: boolean;
     fileBase64?: string | null;
     path?: string | null;
+    reason?: string;
+    isNotify?: boolean;
 }
 
 export class BlogEntitySearch extends SearchEntity {

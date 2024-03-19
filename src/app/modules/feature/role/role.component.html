@@ -46,7 +46,7 @@
                 <tbody>
                     <tr *ngFor="let data of basicTable.data; let i =index"
                         [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
-                        <td>{{i+1}}</td>
+                        <td>{{(i+1) + pageSize * (pageIndex -1)}}</td>
                         <td>{{data.code}}</td>
                         <td>{{data.name}}</td>
                         <td *ngIf="data.isAdmin" style="color: green; font-weight: bold;"><span nz-icon nzType="check"
@@ -74,7 +74,7 @@
             Hiển thị tổng {{totalCount}} Bản ghi
             <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
                 nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
-                (nzPageIndexChange)="search()" (nzPageSizeChange)="getDataTable()">
+                (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
             </nz-pagination>
         </div>
     </div>
@@ -82,3 +82,5 @@
 
 <app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
     (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

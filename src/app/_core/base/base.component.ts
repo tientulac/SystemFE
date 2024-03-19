@@ -83,6 +83,7 @@ export class BaseComponent<T> {
   }
 
   getList() {
+    this.isLoading = true;
     this.baseService.getByRequest(this.URL, this.EntitySearch).subscribe(
       (res: ResponseAPI<PaginatedList<T>>) => {
         if (res.code != '200') {
@@ -90,10 +91,9 @@ export class BaseComponent<T> {
         }
         else {
           this.Entities = res.data.items;
-          this.pageIndex = res.data.pageIndex ?? 0;
-          this.pageSize = res.data.pageSize ?? 0;
           this.totalCount = res.data.totalCount ?? 0;
         }
+        this.isLoading = false;
       }
     );
   }
@@ -201,5 +201,9 @@ export class BaseComponent<T> {
 
   renderNameStatus(list: statusModel[], value: any) {
     return list?.find(x => x.id == value)?.name ?? '';
+  }
+
+  renderContent(content: string | null) {
+    return content ? (content.length > 200 ? content.substring(0, 200) + ' ...' : content) : '';
   }
 }

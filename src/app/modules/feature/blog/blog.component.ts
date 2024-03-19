@@ -51,7 +51,6 @@ export class BlogComponent extends BaseComponent<BlogEntity> {
     this.title.setTitle('Quản lý bài đăng');
     this.field_Validation = {
       code: false,
-      name: false,
       status: false
     };
     this.GROUP_BUTTON.ADD = false;
@@ -80,5 +79,14 @@ export class BlogComponent extends BaseComponent<BlogEntity> {
     this.EntitySearch.pagingAndSortingModel.orderColumn = column;
     this.EntitySearch.pagingAndSortingModel.orderDirection = sortOrder === 'ascend' ? 'asc' : sortOrder === 'descend' ? 'desc' : '';
     this.getDataTable();
+  }
+
+  onSubmit() {
+    this.onSubmitting = true;
+    if (!this.isSubmit) {
+      this.toastr.warning('Dữ liệu nhập chưa hợp lệ');
+      return;
+    }
+    this.save();
   }
 }

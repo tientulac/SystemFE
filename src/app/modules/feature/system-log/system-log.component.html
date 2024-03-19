@@ -1,0 +1,80 @@
+<app-group-button [GROUP_BUTTON]="GROUP_BUTTON" (searchEvent)="search()"
+    (filterEvent)="displayFilter()"></app-group-button>
+
+<section class="content cus-body" *ngIf="isFilter">
+    <div class="card">
+        <div class="card-body">
+            <div [nzGutter]="24">
+                <form nz-form nzLayout="vertical" nz-row>
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>Tên</nz-form-label>
+                            <nz-input-group [nzSuffix]="suffixIconSearch">
+                                <input type="text" nz-input placeholder="Nhập tìm kiếm"
+                                    [(ngModel)]="EntitySearch.name" />
+                            </nz-input-group>
+                            <ng-template #suffixIconSearch>
+                                <span nz-icon nzType="search"></span>
+                            </ng-template>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>Loại</nz-form-label>
+                            <nz-select nzShowSearch nzAllowClear nz-input [(ngModel)]="EntitySearch.type">
+                                <nz-option nzLabel="Tất cả" [nzValue]="null"></nz-option>
+                                <nz-option *ngFor="let option of types" [nzLabel]="option.name"
+                                    [nzValue]="option.id"></nz-option>
+                            </nz-select>
+                        </nz-form-item>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content cus-body">
+    <div class="card">
+        <div class="card-body">
+            <nz-table #basicTable [nzData]="Entities" [nzBordered]="true" [nzFrontPagination]="false"
+                [nzShowPagination]="false">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên</th>
+                        <th>JsonBody</th>
+                        <th>Loại</th>
+                        <th>Ngày tạo</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data; let i =index"
+                        [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                        <td>{{(i+1) + pageSize * (pageIndex -1)}}</td>
+                        <td>{{data.name}}</td>
+                        <td>{{data.jsonBody}}</td>
+                        <td>{{renderNameStatus(types, data.type)}}</td>
+                        <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td *ngIf="!data.isSoftDeleted">
+                            <a><span nz-icon nzType="delete" (click)="isDisplayDelete = true; id_record = data.id"
+                                    nzTheme="outline"></span></a>
+                        </td>
+                        <td *ngIf="data.isSoftDeleted"></td>
+                    </tr>
+                </tbody>
+            </nz-table>
+            Hiển thị tổng {{totalCount}} Bản ghi
+            <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
+                nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
+                (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
+            </nz-pagination>
+        </div>
+    </div>
+</section>
+
+<app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
+    (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

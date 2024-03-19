@@ -8,6 +8,8 @@ import { UserComponent } from "./user/user.component";
 import { UserCustomerComponent } from "./user/user-customer/user-customer.component";
 import { RatingBlogComponent } from "./blog/rating-blog/rating-blog.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
+import { NotifycationComponent } from "./notifycation/notifycation.component";
+import { SystemLogComponent } from "./system-log/system-log.component";
 
 @NgModule({
     declarations: [
@@ -16,7 +18,9 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
         UserComponent,
         UserCustomerComponent,
         RatingBlogComponent,
-        DashboardComponent
+        DashboardComponent,
+        NotifycationComponent,
+        SystemLogComponent
     ],
     imports: [
         FeatureRoutingModule,

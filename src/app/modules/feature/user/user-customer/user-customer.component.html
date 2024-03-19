@@ -18,7 +18,7 @@
                     <td>{{i+1}}</td>
                     <td>{{data.code}}</td>
                     <td>{{data.fullName}}</td>
-                    <td>{{data.birth | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                    <td>{{data.birth | date:'dd/MM/yyyy' ?? ''}}</td>
                     <td>{{data.address}}</td>
                     <td>{{data.gender == 0 ? 'Nữ' : 'Nam'}}</td>
                 </tr>

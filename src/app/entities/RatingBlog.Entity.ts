@@ -9,7 +9,6 @@ export class RatingBlogEntity extends BaseEntity {
     userAccountId?: string | null;
     userAccount?: UserAccountEntity | null;
     comment?: string | null;
-    isLike?: boolean | null;
     type?: number | null;
     fileBase64?: string | null;
     path?: string | null;

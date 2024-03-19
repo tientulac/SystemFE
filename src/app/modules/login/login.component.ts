@@ -42,35 +42,37 @@ export class LoginComponent extends BaseComponent<UserAccountEntity> implements 
   }
 
   login() {
+    this.isLoading = true;
     let req = {
       userName: this._userName ?? '',
       password: this._password ?? ''
     };
     if (this._userName == '' || this._password == '') {
       this.toastr.warning('Thông tin không được để trống');
+      this.isLoading = false;
+      return;
     }
-    else {
-      this.loginService.login(req).subscribe(
-        (res: ResponseAPI<UserAccountLoginEntity>) => {
-          if (res.code == "200") {
-            if (res.data.status != 1) {
-              this.toastr.warning('Tài khoản chưa được kích hoạt');
-              return;
-            }
-            if (!(res.data.role?.code == '001')) {
-              this.toastr.warning('Tài khoản không có quyền truy cập quản trị');
-              return;
-            }
-            this.toastr.success("Đăng nhập thành công");
-            localStorage.setItem('TOKEN', res.data.token?.toString() ?? '');
-            localStorage.setItem('UserInfo', JSON.stringify(res.data) ?? {});
-            this.router.navigateByUrl('/main/feature/dashboard');
+    this.loginService.login(req).subscribe(
+      (res: ResponseAPI<UserAccountLoginEntity>) => {
+        if (res.code == "200") {
+          if (res.data.status != 1) {
+            this.toastr.warning('Tài khoản chưa được kích hoạt');
+            return;
           }
-          else {
-            this.toastr.warning('Tên đăng nhập hoặc mật khẩu không chính xác');
+          if (!(res.data.role?.code == '001')) {
+            this.toastr.warning('Tài khoản không có quyền truy cập quản trị');
+            return;
           }
+          this.toastr.success("Đăng nhập thành công");
+          localStorage.setItem('TOKEN', res.data.token?.toString() ?? '');
+          localStorage.setItem('UserInfo', JSON.stringify(res.data) ?? {});
+          this.router.navigateByUrl('/main/feature/dashboard');
         }
-      );
-    }
+        else {
+          this.toastr.warning('Tên đăng nhập hoặc mật khẩu không chính xác');
+        }
+        this.isLoading = false;
+      }
+    );
   }
 }
