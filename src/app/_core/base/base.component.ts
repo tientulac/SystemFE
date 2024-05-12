@@ -21,9 +21,13 @@ interface statusModel {
 })
 
 export class BaseComponent<T> {
-
+  genders: any = [
+    { id: 1, name: "Nam" },
+    { id: 2, name: "Nữ" },
+    { id: 3, name: "Khác" },
+  ];
   sortOrder: any;
-
+  EntitiesCustom: any;
   Entity!: T | null | any;
   EntitySearch!: any | {};
   Entities!: T[] | null | undefined;
@@ -127,6 +131,48 @@ export class BaseComponent<T> {
     );
   }
 
+  ss_getAll() {
+    this.baseService.ss_getAll(this.URL).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.Entities = res.data;
+        }
+        else {
+          this.toastr.warning(res.message);
+        }
+      }
+    );
+  }
+
+  ss_getAllCustom(URL: string) {
+    this.baseService.ss_getAllCustom(URL).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.EntitiesCustom = res.data.filter((x: any) => x._delete != true);
+        }
+        else {
+          this.toastr.warning(res.message);
+        }
+      }
+    );
+  }
+
+  ss_save() {
+    this.baseService.ss_save(this.URL, this.Entity).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.toastr.success('Thành công');
+          this.ss_getAll();
+          this.handleCancel();
+        }
+        else {
+          this.toastr.warning(res.message);
+        }
+      }
+    );
+  }
+
+
   save() {
     this.baseService.save(this.URL, this.Entity).subscribe(
       (res: ResponseAPI<T>) => {
@@ -158,7 +204,7 @@ export class BaseComponent<T> {
     this.isChangePass = false;
 
     // this.modal.closeAll();
-    this.getList();
+    this.ss_getAll();
   }
 
   handleUpload = (item: any) => {

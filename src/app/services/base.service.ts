@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { AppConfig, AppConfiguration } from 'src/configuration';
 import { PaginatedList, ResponseAPI } from '../entities/ResponseAPI';
+import { Response } from '../models/response';
 
 @Injectable({
     providedIn: 'root',
@@ -47,6 +48,38 @@ export class BaseService<T> {
 
     postAsync(url: string, request: any | null): Observable<ResponseAPI<any>> {
         return this.http.post<ResponseAPI<any>>(this.appConfig.API + url, request).pipe(map((res) => { return res; }));
+    }
+
+    ss_getAll(url: string): Observable<Response<T[]>> {
+        return this.http.get<Response<T[]>>(this.appConfig.API + url).pipe(map((res) => { return res; }));
+    }
+
+    ss_getAllCustom(url: string): Observable<Response<any>> {
+        return this.http.get<Response<any>>(this.appConfig.API + url).pipe(map((res) => { return res; }));
+    }
+
+    ss_export(url: string): Observable<Response<ArrayBuffer>> {
+        return this.http.get<Response<ArrayBuffer>>(this.appConfig.API + url + '/export').pipe(map((res) => { return res; }));
+    }
+
+    ss_getById(url: string): Observable<Response<T>> {
+        return this.http.get<Response<T>>(this.appConfig.API + url).pipe(map((res) => { return res; }));
+    }
+
+    ss_save(url: string, entity: T): Observable<Response<T>> {
+        return this.http.post<Response<T>>(this.appConfig.API + url, entity).pipe(map((res) => { return res; }));
+    }
+
+    ss_delete(url: string): Observable<Response<T>> {
+        return this.http.delete<Response<T>>(this.appConfig.API + url).pipe(map((res) => { return res; }));
+    }
+
+    ss_search(url: string, request: any): Observable<Response<T[]>> {
+        return this.http.post<Response<T[]>>(this.appConfig.API + url + '/search', request).pipe(map((res) => { return res; }));
+    }
+
+    ss_postAsync(url: string, request: any | null): Observable<Response<any>> {
+        return this.http.post<Response<any>>(this.appConfig.API + url, request).pipe(map((res) => { return res; }));
     }
 }
 

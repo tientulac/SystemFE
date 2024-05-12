@@ -13,7 +13,7 @@
             </div>
         </a>
         <ul nz-menu nzTheme="dark" nzMode="inline">
-            <li nz-submenu nzTitle="{{userInfo?.userName | uppercase}}" nzIcon="user">
+            <li nz-submenu nzTitle="{{userInfo?.user_name | uppercase}}" nzIcon="user">
                 <ul>
                     <li nz-menu-item>
                         <a (click)="openModal('INFO', userInfo)">Thông tin cá nhân</a>
@@ -30,27 +30,27 @@
             <li nz-submenu nzTitle="Master Data" nzIcon="file">
                 <ul>
                     <li nz-menu-item>
-                        <a [routerLink]="pathRouting.TOPIC_TYPE">Loại chủ đề</a>
+                        <a [routerLink]="pathRouting.CATEGORY">Danh mục</a>
                     </li>
                 </ul>
                 <ul>
                     <li nz-menu-item>
-                        <a [routerLink]="pathRouting.TOPIC">Chủ đề</a>
+                        <a [routerLink]="pathRouting.BRAND">Thương hiệu</a>
                     </li>
                 </ul>
-                <!-- <ul>
+                <ul>
                     <li nz-menu-item>
-                        <a routerLink="category/favorite-topic">Chủ đề ưa thích</a>
+                        <a [routerLink]="pathRouting.PRODUCT">Sản phẩm</a>
                     </li>
-                </ul> -->
+                </ul>
             </li>
-            <li nz-submenu nzTitle="Bài đăng" nzIcon="book">
+            <!-- <li nz-submenu nzTitle="Bài đăng" nzIcon="book">
                 <ul>
                     <li nz-menu-item>
                         <a [routerLink]="pathRouting.BLOG">Quản lý bài đăng</a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
             <li nz-menu-item>
                 <span nz-icon nzType="user"></span>
                 <span> <a [routerLink]="pathRouting.ROLE">Quyền</a></span>
@@ -82,16 +82,31 @@
 </nz-layout>
 
 <nz-modal *ngIf="isShownInfo" [(nzVisible)]="isShownInfo" nzTitle="Cập nhật" (nzOnCancel)="handleCancel()"
-    (nzOnOk)="handleCancel()">
+    (nzOnOk)="onSubmit()">
     <ng-container *nzModalContent>
         <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="24">
+                <img src="{{Entity.avatar}}" style="width: 50px; height: 50px;" alt="">
+            </div>
             <div nz-col [nzSpan]="12">
                 <nz-form-label [nzSpan]="24">Họ tên</nz-form-label>
-                <input nz-input placeholder="Nhập họ tên" [(ngModel)]="Entity.customer.fullName" type="text" />
+                <input nz-input [(ngModel)]="Entity.full_name" type="text" />
             </div>
             <div nz-col [nzSpan]="12">
                 <nz-form-label [nzSpan]="24">Địa chỉ</nz-form-label>
-                <input nz-input placeholder="Nhập địa chỉ" [(ngModel)]="Entity.customer.address" type="text" />
+                <input nz-input [(ngModel)]="Entity.address" type="text" />
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-label [nzSpan]="24">avatar</nz-form-label>
+                <input nz-input [(ngModel)]="Entity.avatar" type="text" />
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-label [nzSpan]="24">Số điện thoại</nz-form-label>
+                <input nz-input [(ngModel)]="Entity.phone" type="text" />
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-label [nzSpan]="24">Email</nz-form-label>
+                <input nz-input [(ngModel)]="Entity.email" type="text" />
             </div>
         </div>
     </ng-container>
@@ -102,16 +117,12 @@
     <ng-container *nzModalContent>
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="24">
-                <nz-form-label [nzSm]="6" [nzXs]="24">Mật khẩu hiện tại</nz-form-label>
-                <input nz-input placeholder="Nhập mật khẩu" [(ngModel)]="Entity.oldHashPassword" type="password" />
-            </div>
-            <div nz-col [nzSpan]="24">
                 <nz-form-label [nzSm]="6" [nzXs]="24">Mật khẩu mới</nz-form-label>
-                <input nz-input placeholder="Nhập mật khẩu" [(ngModel)]="Entity.newHashPassword" type="password" />
+                <input nz-input placeholder="Nhập mật khẩu" [(ngModel)]="Entity.new_password" type="password" />
             </div>
             <div nz-col [nzSpan]="24">
                 <nz-form-label [nzSm]="6" [nzXs]="24">Xác nhận mật khẩu</nz-form-label>
-                <input nz-input placeholder="Nhập mật khẩu" [(ngModel)]="Entity.confirmHashPassword" type="password" />
+                <input nz-input placeholder="Nhập mật khẩu" [(ngModel)]="Entity.confirm_password" type="password" />
             </div>
         </div>
     </ng-container>

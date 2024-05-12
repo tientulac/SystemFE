@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from 'src/app/_core/base/base.component';
 import { ROUTE_PATH } from 'src/app/_core/constant';
 import { AppInjector } from 'src/app/app.module';
-import { UserAccountEntity } from 'src/app/entities/UserAccount.Entity';
+import { Account } from 'src/app/models/account';
 import { BaseService } from 'src/app/services/base.service';
 import { UploadImageService } from 'src/app/services/upload-image.service';
 
@@ -15,10 +15,10 @@ import { UploadImageService } from 'src/app/services/upload-image.service';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent extends BaseComponent<UserAccountEntity>{
+export class MainComponent extends BaseComponent<Account> {
 
   isCollapsed = false;
-  userInfo = new UserAccountEntity();
+  userInfo = new Account();
   pathRouting: any;
   recentURL: any;
 
@@ -27,7 +27,7 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
     public route: ActivatedRoute
   ) {
     super(
-      AppInjector.get(BaseService<UserAccountEntity>),
+      AppInjector.get(BaseService<Account>),
       AppInjector.get(NzModalService),
       AppInjector.get(Title),
       AppInjector.get(UploadImageService),
@@ -44,7 +44,7 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
     window.location.href = '/login';
   }
 
-  openModal(type: any, data: UserAccountEntity) {
+  openModal(type: any, data: Account) {
     this.Entity = data;
     if (type === 'INFO') {
       this.isShownInfo = true;
@@ -57,15 +57,16 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
   async onSubmit(): Promise<boolean> {
     this.onSubmitting = true;
     if (this.isShownInfo) {
-      this.baseService.save('userAccount/update-info', this.Entity).subscribe(
+      this.baseService.ss_save('api/v1/account', this.Entity).subscribe(
         (res) => {
-          if (res.code == '200') {
+          if (res.status == 200) {
             this.toastr.success('Thành công');
             let data = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem('UserInfo'))));
-            data.email = this.Entity.email;
-            data.phone = this.Entity.phone;
-            data.fullName = this.Entity.fullName;
             data.address = this.Entity.address;
+            data.avatar = this.Entity.avatar;
+            data.phone = this.Entity.phone;
+            data.full_name = this.Entity.full_name;
+            data.email = this.Entity.email;
             localStorage.setItem('UserInfo', JSON.stringify(data));
           }
           else {
@@ -75,22 +76,20 @@ export class MainComponent extends BaseComponent<UserAccountEntity>{
       );
     }
     if (this.isChangePass) {
-      if (!this.Entity?.oldHashPassword || !this.Entity?.newHashPassword || !this.Entity?.confirmHashPassword) {
+      if (!this.Entity?.new_password || !this.Entity?.confirm_password) {
         this.toastr.warning('Mật khẩu không được bỏ trống');
         return false;
       }
-      if (this.Entity?.newHashPassword != this.Entity?.confirmHashPassword) {
+      if (this.Entity?.new_password != this.Entity?.confirm_password) {
         this.toastr.warning('Xác nhận mật khẩu chưa đúng');
         return false;
       }
-      this.baseService.save('userAccount/change-pass', this.Entity).subscribe(
+      this.Entity.password = this.Entity.confirm_password;
+      this.baseService.ss_save('api/v1/account', this.Entity).subscribe(
         (res) => {
-          if (res.code == '200') {
+          if (res.status == 200) {
             this.toastr.success('Thành công. Hệ thống sẽ yêu cầu đăng nhập lại sau 3s');
             setTimeout(this.logout, 3000);
-          }
-          else if (res.code == '404') {
-            this.toastr.warning('Mật khẩu hiện tại không đúng');
           }
           else {
             this.toastr.warning(res.message ?? '');

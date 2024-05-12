@@ -19,7 +19,7 @@
                 <div class="card-body pb-0">
                     <div class="h1 fw-bold float-right"><i class="fa fa-book" aria-hidden="true"></i></div>
                     <h2 class="mb-2">{{dataDashboard?.blogs ?? 0}}</h2>
-                    <p>Bài đăng</p>
+                    <p>Sản phẩm</p>
                     <div class="pull-in sparkline-fix chart-as-background">
                         <div><canvas width="327" height="70" id="ProductChart"
                                 style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas>
@@ -33,7 +33,7 @@
                 <div class="card-body pb-0">
                     <div class="h1 fw-bold float-right"><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
                     <h2 class="mb-2">{{dataDashboard?.categoryTypes ?? 0}}</h2>
-                    <p>Loại chủ đề</p>
+                    <p>Đơn hàng</p>
                     <div class="pull-in sparkline-fix chart-as-background">
                         <div><canvas width="327" height="70" id="TransactionChart"
                                 style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas>
@@ -47,7 +47,7 @@
                 <div class="card-body pb-0">
                     <div class="h1 fw-bold float-right"><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
                     <h2 class="mb-2">{{dataDashboard?.categories ?? 0}}</h2>
-                    <p>Chủ đề</p>
+                    <p>Tổng doanh thu</p>
                     <div class="pull-in sparkline-fix chart-as-background">
                         <div><canvas width="327" height="70" id="TransactionChart"
                                 style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas>
@@ -65,7 +65,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2 class="text-center">
-                        Biểu đồ thống kê lượt đánh giá bài viết trong 1 tuần
+                        Biểu đồ thống kê sản phẩm mới trong 1 tuần
                     </h2>
                     <div class="chart-container" style="height: 400px !important;">
                         <canvas id="MyChart">{{ chart }}</canvas>

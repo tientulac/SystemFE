@@ -1,0 +1,87 @@
+<app-group-button [GROUP_BUTTON]="GROUP_BUTTON" (openModalEvent)="openModal($event, Entity)" (searchEvent)="search()"
+    (filterEvent)="displayFilter()"></app-group-button>
+
+<nz-modal *ngIf="isInsert" [(nzVisible)]="isInsert" nzTitle="Thêm mới" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="onSubmit()">
+    <ng-container *nzModalContent>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <app-input-custom [CLASSNAME]="(!field_Validation.name && onSubmitting) ? 'invalid-form' : ''"
+                    (changeInput)="field_Validation.name = $event; validateCustom()" [LABEL]="'Mã'" [MINLENGTH]="3"
+                    [MAXLENGTH]="100" (changeInput)="field_Validation.code = $event;" [PLACEHOLDER]="'Nhập mã'"
+                    [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'code'" [(VALUE)]="Entity.code">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <app-input-custom [CLASSNAME]="(!field_Validation.name && onSubmitting) ? 'invalid-form' : ''"
+                    (changeInput)="field_Validation.code = $event; validateCustom()" [LABEL]="'Tên'" [MINLENGTH]="3"
+                    [MAXLENGTH]="200" (changeInput)="field_Validation.code = $event;" [PLACEHOLDER]="'Nhập tên'"
+                    [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'name'" [(VALUE)]="Entity.name">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <app-select-custom [LABEL]="'Danh mục cha'" [PLACEHOLDER]="'Chọn'" [TYPE]="'NORMAL'"
+                    [(VALUE)]="Entity.parent_category_id" [LISTOPTION]="EntitiesCustom" [LABEL_SELECT]="'name'"
+                    [VALUE_SELECT]="'id'" [FIELD]="'parent_category_id'" [ENTITY]="Entity">
+                </app-select-custom>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <app-input-custom [LABEL]="'Mô tả'" [MAXLENGTH]="500" [PLACEHOLDER]="'Nhập mô tả'" [TYPE]="'text'"
+                    [ENTITY]="Entity" [FIELD]="'descrip'" [(VALUE)]="Entity.descrip">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <app-input-custom [LABEL]="'Hình ảnh'" [MAXLENGTH]="500"
+                    (changeInput)="field_Validation.image = $event;" [PLACEHOLDER]="'Nhập hình ảnh'" [TYPE]="'text'"
+                    [ENTITY]="Entity" [FIELD]="'image'" [(VALUE)]="Entity.image">
+                </app-input-custom>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
+
+<section class="content cus-body">
+    <div class="card">
+        <div class="card-body">
+            <nz-table #basicTable [nzData]="Entities">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Mô tả</th>
+                        <th>Hình ảnh</th>
+                        <th>Ngày tạo</th>
+                        <th>Ngày cập nhật</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data" [class]="data._delete ? 'bg_deleted' : ''">
+                        <td>{{data.id}}</td>
+                        <td>{{data.code}}</td>
+                        <td>{{data.name}}</td>
+                        <td>{{data.descrip}}</td>
+                        <td><img [src]="data.image" style="width: 50px; height: 50px;" alt=""></td>
+                        <td>{{data.created_at | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td>{{data.updated_at | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td *ngIf="!data._delete">
+                            <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
+                                    nzTheme="outline"></span></a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a><span nz-icon nzType="delete" (click)="isDisplayDelete = true; id_record = data.id"
+                                    nzTheme="outline"></span></a>
+
+                        </td>
+                        <td *ngIf="data._delete"></td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</section>
+
+<app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
+    (handleCancelEvent)="handleCancel()"></app-delete-modal>
+
+<app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

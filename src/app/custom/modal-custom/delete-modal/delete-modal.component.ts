@@ -25,14 +25,14 @@ export class DeleteModalComponent {
   confirm() {
     const url = `${this.URL.toString() + '/' + this.ID.toString()}`;
     this.deleteEvent.emit();
-    this.baseService.delete(url).subscribe(
+    this.baseService.ss_delete(url).subscribe(
       (res) => {
-        if (res.code == '200') {
+        if (res.status == 200) {
           this.toastr.success('Thành công !');
           this.handleCancelEvent.emit();
         }
         else {
-          this.toastr.warning(res.messageEX?.toString());
+          this.toastr.warning(res.message);
         }
       }
     );

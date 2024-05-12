@@ -80,4 +80,7 @@ export const ROUTE_PATH = {
     USER: 'feature/user',
     NOTIFYCATION: 'feature/notifycation',
     SYSTEM_LOG: 'feature/system-log',
+    CATEGORY: 'category/catalog',
+    BRAND: 'category/brand',
+    PRODUCT: 'category/product',
 }

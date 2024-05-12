@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class InputCustomComponent {
   @Input() TYPE: string = '';
   @Input() PLACEHOLDER: string = '';
-  @Input() VALUE: any = null;
+  @Input() VALUE: any = '';
   @Input() FIELD: any = '';
   @Input() LABEL: any = '';
   @Input() CLASSNAME: any = '';
@@ -18,8 +18,8 @@ export class InputCustomComponent {
 
   @Input() DISABLED: boolean = false;
   @Input() REQUIRED: boolean = false;
-  @Input() MIN: any = null;
-  @Input() MAX: any = null;
+  @Input() MIN: any = '';
+  @Input() MAX: any = '';
   @Input() MINLENGTH: any = null;
   @Input() MAXLENGTH: any = null;
 

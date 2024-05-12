@@ -1,7 +1,7 @@
 {
     "production": false,
     "dev": true,
-    "API": "https://localhost:44330/api/",
+    "API": "http://localhost:8080/",
     "URL_UPLOAD": "https://localhost:44330/api/Upload/GetImage?imgName=",
     "URL_RECORD": "https://localhost:44330/api/Upload/GetRecord?fileName="
 }

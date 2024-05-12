@@ -5,6 +5,8 @@ import { Observable, map } from 'rxjs';
 import { AppConfig, AppConfiguration } from 'src/configuration';
 import { ResponseAPI } from '../entities/ResponseAPI';
 import { UserAccountEntity } from '../entities/UserAccount.Entity';
+import { Response } from '../models/response';
+import { Account } from '../models/account';
 
 @Injectable({
     providedIn: 'root',
@@ -17,8 +19,8 @@ export class LoginService {
     ) {
     }
 
-    login(request: any): Observable<ResponseAPI<UserAccountEntity>> {
-        return this.http.post<ResponseAPI<UserAccountEntity>>(this.appConfig.API + 'UserAccount/login', request).pipe(map((res) => { return res; }));
+    login(request: any): Observable<Response<Account>> {
+        return this.http.post<Response<Account>>(this.appConfig.API + 'api/v1/account/login', request).pipe(map((res) => { return res; }));
     }
 }
 
