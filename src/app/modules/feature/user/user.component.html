@@ -6,11 +6,10 @@
     <ng-container *nzModalContent>
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="24">
-                <app-select-custom
-                    [CLASSNAME]="(!field_Validation.categoryTypeId && onSubmitting) ? 'invalid-form' : ''"
-                    [LABEL]="'Quyền'" (changeSelect)="field_Validation.roleId = $event; validateCustom()"
-                    [PLACEHOLDER]="'Chọn quyền'" [REQUIRED]="true" [TYPE]="'NORMAL'" [(VALUE)]="Entity.roleId"
-                    [LISTOPTION]="listRole" [LABEL_SELECT]="'name'" [VALUE_SELECT]="'id'" [FIELD]="'roleId'"
+                <app-select-custom [CLASSNAME]="(!field_Validation.role_id && onSubmitting) ? 'invalid-form' : ''"
+                    [LABEL]="'Quyền'" (changeSelect)="field_Validation.role_id = $event; validateCustom()"
+                    [PLACEHOLDER]="'Chọn quyền'" [REQUIRED]="true" [TYPE]="'NORMAL'" [(VALUE)]="Entity.role_id"
+                    [LISTOPTION]="listRole" [LABEL_SELECT]="'name'" [VALUE_SELECT]="'id'" [FIELD]="'role_id'"
                     [ENTITY]="Entity">
                 </app-select-custom>
             </div>
@@ -27,45 +26,9 @@
                     [ENTITY]="Entity">
                 </app-select-custom>
             </div>
-            <div nz-col [nzSpan]="24">
-                <br>
-                <div class="clearfix">
-                    <nz-upload [nzBeforeUpload]="beforeUpload" [nzCustomRequest]="handleUpload" nzListType="picture"
-                        [nzLimit]="1" [(nzFileList)]="listFileUpload">
-                        <img *ngIf="Entity.image" src="{{URL_Upload}}/{{Entity.image ?? ''}}" class="img_logo">
-                        <button nz-button>
-                            <span nz-icon nzType="upload"></span>
-                            Tải ảnh lên
-                        </button>
-                    </nz-upload>
-                </div>
-            </div>
         </div>
     </ng-container>
 </nz-modal>
-
-<section class="content cus-body" *ngIf="isFilter">
-    <div class="card">
-        <div class="card-body">
-            <div [nzGutter]="24">
-                <form nz-form nzLayout="vertical" nz-row>
-                    <div nz-col [nzSpan]="24">
-                        <nz-form-item>
-                            <nz-form-label>Tên đăng nhập</nz-form-label>
-                            <nz-input-group [nzSuffix]="suffixIconSearch">
-                                <input type="text" nz-input placeholder="Nhập tìm kiếm"
-                                    [(ngModel)]="EntitySearch.userName" />
-                            </nz-input-group>
-                            <ng-template #suffixIconSearch>
-                                <span nz-icon nzType="search"></span>
-                            </ng-template>
-                        </nz-form-item>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
 
 <section class="content cus-body">
     <div class="card">
@@ -78,7 +41,6 @@
                         <th>Mã</th>
                         <th>Tên tài khoản</th>
                         <th>Avatar</th>
-                        <th>Quyền</th>
                         <th>Điện thoại đăng ký</th>
                         <th>Email</th>
                         <th>Trạng thái</th>
@@ -88,47 +50,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of basicTable.data; let i =index"
-                        [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                    <tr *ngFor="let data of basicTable.data; let i =index" [class]="data._delete ? 'bg_deleted' : ''">
                         <td>{{i+1}}</td>
-                        <td>{{data.code}}</td>
-                        <td>{{data.userName}}</td>
-                        <td><img src="{{URL_Upload}}/{{data.image ?? ''}}" class="img_logo"></td>
-                        <td>{{data?.role?.name ?? ''}}</td>
+                        <td>{{data.id}}</td>
+                        <td>{{data.user_name}}</td>
+                        <td><img [src]="data.avatar" style="width: 50px; height: 50px;"></td>
                         <td>{{data.phone}}</td>
                         <td>{{data.email}}</td>
                         <td>{{renderNameStatus(statuses, data.status)}}</td>
-                        <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
-                        <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
-                        <td *ngIf="!data.isSoftDeleted">
+                        <td>{{data.created_at | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td>{{data.updated_at | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td *ngIf="!data._delete">
                             <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
-                                    nzTheme="outline"></span></a>
-                            <nz-divider nzType="vertical"></nz-divider>
-                            <a><span nz-icon nzType="book" (click)="isDisplayCustomerInfo = true; id_record = data.id"
                                     nzTheme="outline"></span></a>
                             <nz-divider nzType="vertical"></nz-divider>
                             <a><span nz-icon nzType="delete" (click)="isDisplayDelete = true; id_record = data.id"
                                     nzTheme="outline"></span></a>
 
                         </td>
-                        <td *ngIf="data.isSoftDeleted"></td>
+                        <td *ngIf="data._delete"></td>
                     </tr>
                 </tbody>
                 <br>
             </nz-table>
-            Hiển thị tổng {{totalCount}} Bản ghi
-            <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
-                nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
-                (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
-            </nz-pagination>
         </div>
     </div>
 </section>
 
 <app-delete-modal [ID]="id_record" [URL]="URL" [SHOWDELETE]="isDisplayDelete"
     (handleCancelEvent)="handleCancel()"></app-delete-modal>
-
-<app-user-customer [ID]="id_record" *ngIf="isDisplayCustomerInfo" [SHOWCUSTOMERINFO]="isDisplayCustomerInfo"
-    (handleCancelEvent)="handleCancel()"></app-user-customer>
 
 <app-full-screen-spinner [isLoading]="isLoading"></app-full-screen-spinner>

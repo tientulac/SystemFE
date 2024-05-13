@@ -94,12 +94,14 @@ export class ProductComponent extends BaseComponent<Product> {
   openModalAttribute(type: any, data: ProductDetail) {
     this.getDataCustom();
     if (type === 'DESCRIPTION') {
+      this.productDetail = data;
       this.productDescription = new ProductDescription();
-      this.productDescription.product_id = data.product_id;
+      this.productDescription.product_id = data.id;
     }
     if (type === 'IMAGE') {
+      this.productDetail = data;
       this.productImage = new ProductImage();
-      this.productImage.product_id = data.product_id;
+      this.productImage.product_id = data.id;
     }
   }
   getDataCustom() {
@@ -136,7 +138,7 @@ export class ProductComponent extends BaseComponent<Product> {
     this.baseService.ss_getAllCustom('api/v1/productDescription').subscribe(
       (res) => {
         if (res.status == 200) {
-          this.productsDescription = res.data.filter((x: ProductDescription) => x.product_id == this.Entity.id);
+          this.productsDescription = res.data.filter((x: ProductDescription) => x.product_id == this.productDetail.id);
         }
         else {
           this.toastr.warning(res.message);
@@ -146,7 +148,7 @@ export class ProductComponent extends BaseComponent<Product> {
     this.baseService.ss_getAllCustom('api/v1/productImage').subscribe(
       (res) => {
         if (res.status == 200) {
-          this.productsImage = res.data.filter((x: ProductImage) => x.product_id == this.Entity.id);
+          this.productsImage = res.data.filter((x: ProductImage) => x.product_id == this.productDetail.id);
         }
         else {
           this.toastr.warning(res.message);

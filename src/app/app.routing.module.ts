@@ -11,6 +11,10 @@ const routes: Routes = [
     path: '',
     component: LoginComponent
   },
+  {
+    path: 'user-side',
+    loadChildren: () => import('./modules/user-side/user-side.module').then(m => m.UserSideModule),
+  },
   { path: '**', redirectTo: '' },
 ];
 

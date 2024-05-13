@@ -5,9 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from 'src/app/_core/base/base.component';
 import { LIST_STATUS_USER } from 'src/app/_core/constant';
 import { AppInjector } from 'src/app/app.module';
-import { PaginationEntity } from 'src/app/entities/Pagination.Entity';
 import { RoleEntity, RoleEntitySearch } from 'src/app/entities/Role.Entity';
-import { UserAccountEntity, UserAccountEntitySearch } from 'src/app/entities/UserAccount.Entity';
+import { Account } from 'src/app/models/account';
 import { BaseService } from 'src/app/services/base.service';
 import { UploadImageService } from 'src/app/services/upload-image.service';
 import { AppConfig, AppConfiguration } from 'src/configuration';
@@ -17,20 +16,7 @@ import { AppConfig, AppConfiguration } from 'src/configuration';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent extends BaseComponent<UserAccountEntity> {
-  override EntitySearch: UserAccountEntitySearch = {
-    id: null,
-    createdAt: null,
-    createdBy: null,
-    updatedAt: null,
-    updatedBy: null,
-    deletedAt: null,
-    deletedBy: null,
-    isSoftDeleted: null,
-    searchString: null,
-    pagingAndSortingModel: new PaginationEntity
-  };
-
+export class UserComponent extends BaseComponent<Account> {
   statuses = LIST_STATUS_USER;
   listRole: RoleEntity[] | undefined;
 
@@ -39,57 +25,34 @@ export class UserComponent extends BaseComponent<UserAccountEntity> {
     private roleService: BaseService<RoleEntity>
   ) {
     super(
-      AppInjector.get(BaseService<UserAccountEntity>),
+      AppInjector.get(BaseService<Account>),
       AppInjector.get(NzModalService),
       AppInjector.get(Title),
       AppInjector.get(UploadImageService),
       AppInjector.get(ToastrService),
     );
-    this.Entity = new UserAccountEntity();
-    this.URL = 'UserAccount';
+    this.Entity = new Account();
+    this.URL = 'api/v1/account';
     this.URL_Upload = appConfig.URL_UPLOAD;
     this.title.setTitle('Quản lý người dùng');
     this.field_Validation = {
       roleId: false,
-      status: false,
     };
     this.GROUP_BUTTON.RELOAD = true;
-    this.GROUP_BUTTON.FILTER = true;
-    this.GROUP_BUTTON.SEARCH = true;
     this.getDataTable();
     this.getListRole();
   }
 
   getListRole() {
-    let pageSearch: RoleEntitySearch = {
-      code: null,
-      name: null,
-      isActive: null,
-      isAdmin: null,
-      id: null,
-      createdAt: null,
-      createdBy: null,
-      updatedAt: null,
-      updatedBy: null,
-      deletedAt: null,
-      deletedBy: null,
-      isSoftDeleted: null,
-      searchString: null,
-      pagingAndSortingModel: new PaginationEntity
-    };
-    pageSearch.pagingAndSortingModel.pageIndex = 1;
-    pageSearch.pagingAndSortingModel.pageSize = 1000000;
-    this.roleService.getByRequest('Role', pageSearch).subscribe(
+    this.roleService.ss_getAll('api/v1/role').subscribe(
       (res) => {
-        this.listRole = res.data.items ?? [];
+        this.listRole = res.data ?? [];
       }
     );
   }
 
   getDataTable() {
-    this.EntitySearch.pagingAndSortingModel.pageIndex = this.pageIndex;
-    this.EntitySearch.pagingAndSortingModel.pageSize = this.pageSize;
-    this.getList();
+    this.ss_getAll();
   }
 
   onSubmit() {
@@ -101,18 +64,11 @@ export class UserComponent extends BaseComponent<UserAccountEntity> {
     this.save();
   }
 
-  openModal(type: any, data: UserAccountEntity) {
+  openModal(type: any, data: Account) {
     this.isInsert = true;
-    this.Entity = new UserAccountEntity();
+    this.Entity = new Account();
     if (type === 'EDIT') {
       this.Entity = data;
     }
-  }
-
-  onSortOrderChange(column: string, sortOrder: string): void {
-    this.sortOrder = this.sortOrder === 'ascend' ? 'descend' : 'ascend';
-    this.EntitySearch.pagingAndSortingModel.orderColumn = column;
-    this.EntitySearch.pagingAndSortingModel.orderDirection = sortOrder === 'ascend' ? 'asc' : sortOrder === 'descend' ? 'desc' : '';
-    this.getDataTable();
   }
 }

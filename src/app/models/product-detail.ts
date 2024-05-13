@@ -11,4 +11,5 @@ export class ProductDetail extends BaseModel {
     gender?: number;
     size?: string;
     status?: number;
+    poster?: string;
 }

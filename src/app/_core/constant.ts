@@ -28,11 +28,9 @@ export const LIST_TYPE_BLOG = [
 ];
 
 export const LIST_STATUS_USER = [
-    { id: 1, code: 'Active', name: 'Kích hoạt' },
-    { id: 2, code: 'Disable', name: 'Ẩn' },
+    { id: 1, code: 'NotActive', name: 'Chưa kích hoạt' },
+    { id: 2, code: 'Active', name: 'Đã kích hoạt' },
     { id: 3, code: 'Ban', name: 'Đã Khóa' },
-    { id: 4, code: 'Approve', name: 'Duyệt' },
-    { id: 5, code: 'AwaitingApprove', name: 'Chờ duyệt' },
 ];
 
 export const LIST_STATUS_RATING_BLOG = [
@@ -83,4 +81,6 @@ export const ROUTE_PATH = {
     CATEGORY: 'category/catalog',
     BRAND: 'category/brand',
     PRODUCT: 'category/product',
+    CART: 'feature/cart',
+    ORDER: 'feature/order',
 }

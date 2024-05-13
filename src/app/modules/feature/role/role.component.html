@@ -6,6 +6,12 @@
     <ng-container *nzModalContent>
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="12">
+                <app-input-custom [LABEL]="'ID'" [MINLENGTH]="2" [MAXLENGTH]="200"
+                    (changeInput)="field_Validation.code = $event; validateCustom()" [PLACEHOLDER]="'Nhập mã'"
+                    [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'id'" [(VALUE)]="Entity.id">
+                </app-input-custom>
+            </div>
+            <div nz-col [nzSpan]="12">
                 <app-input-custom [LABEL]="'Mã'" [MINLENGTH]="2" [MAXLENGTH]="10"
                     (changeInput)="field_Validation.code = $event; validateCustom()" [PLACEHOLDER]="'Nhập mã'"
                     [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'code'" [(VALUE)]="Entity.code">
@@ -17,10 +23,6 @@
                     [PLACEHOLDER]="'Nhập tên'" [REQUIRED]="true" [TYPE]="'text'" [ENTITY]="Entity" [FIELD]="'name'"
                     [(VALUE)]="Entity.name">
                 </app-input-custom>
-            </div>
-            <div nz-col [nzSpan]="12">
-                <label nz-checkbox [(ngModel)]="Entity.isAdmin">Admin</label>
-                <label nz-checkbox [(ngModel)]="Entity.isActive">Active</label>
             </div>
         </div>
     </ng-container>
@@ -36,8 +38,6 @@
                         <th>STT</th>
                         <th>Mã</th>
                         <th>Tên</th>
-                        <th>Amin</th>
-                        <th>Active</th>
                         <th>Ngày tạo</th>
                         <th>Ngày sửa</th>
                         <th>Hành động</th>
@@ -45,21 +45,13 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of basicTable.data; let i =index"
-                        [class]="data.isSoftDeleted ? 'bg_deleted' : ''">
+                        [class]="data._delete ? 'bg_deleted' : ''">
                         <td>{{(i+1) + pageSize * (pageIndex -1)}}</td>
                         <td>{{data.code}}</td>
                         <td>{{data.name}}</td>
-                        <td *ngIf="data.isAdmin" style="color: green; font-weight: bold;"><span nz-icon nzType="check"
-                                nzTheme="outline"></span></td>
-                        <td *ngIf="data.isActive" style="color: green; font-weight: bold;"><span nz-icon nzType="check"
-                                nzTheme="outline"></span></td>
-                        <td *ngIf="!data.isAdmin" style="color: red; font-weight: bold;"><span nz-icon nzType="close"
-                                nzTheme="outline"></span></td>
-                        <td *ngIf="!data.isActive" style="color: red; font-weight: bold;"><span nz-icon nzType="close"
-                                nzTheme="outline"></span></td>
-                        <td>{{data.createdAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
-                        <td>{{data.updatedAt | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
-                        <td *ngIf="!data.isSoftDeleted">
+                        <td>{{data.created_at | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td>{{data.updated_at | date:'dd/MM/yy hh:mm:aa' ?? ''}}</td>
+                        <td *ngIf="!data._delete">
                             <a><span nz-icon nzType="edit" (click)="openModal('EDIT', data)"
                                     nzTheme="outline"></span></a>
                             <nz-divider nzType="vertical"></nz-divider>
@@ -67,15 +59,10 @@
                                     nzTheme="outline"></span></a>
 
                         </td>
-                        <td *ngIf="data.isSoftDeleted"></td>
+                        <td *ngIf="data._delete"></td>
                     </tr>
                 </tbody>
             </nz-table>
-            Hiển thị tổng {{totalCount}} Bản ghi
-            <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="totalCount" style="float: right; margin-top: 16px;"
-                nzShowSizeChanger [(nzPageSize)]="pageSize" [nzPageSizeOptions]="pageSizes"
-                (nzPageIndexChange)="getDataTable()" (nzPageSizeChange)="getDataTable()">
-            </nz-pagination>
         </div>
     </div>
 </section>

@@ -10,6 +10,8 @@ import { RatingBlogComponent } from "./blog/rating-blog/rating-blog.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { NotifycationComponent } from "./notifycation/notifycation.component";
 import { SystemLogComponent } from "./system-log/system-log.component";
+import { CartComponent } from "./cart/cart.component";
+import { OrderComponent } from "./order/order.component";
 
 @NgModule({
     declarations: [
@@ -20,7 +22,9 @@ import { SystemLogComponent } from "./system-log/system-log.component";
         RatingBlogComponent,
         DashboardComponent,
         NotifycationComponent,
-        SystemLogComponent
+        SystemLogComponent,
+        CartComponent,
+        OrderComponent
     ],
     imports: [
         FeatureRoutingModule,
